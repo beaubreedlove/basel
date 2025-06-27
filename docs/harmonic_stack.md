@@ -15,14 +15,20 @@ statement. Each step adds an axis aligned square of side `1/n` for
    blocks. Whenever it reaches a vertical drop, the square falls straight
   down until it touches the ground `y = 0` or rests on previously placed
   blocks. It continues sliding and falling until the entire square lies
-  no higher than the line `y = 1`.
-3. The square must never have a gap beneath it in its final position.
+  no higher than the line `y = 1`.  If, once it has reached this height,
+  either its bottom or left side is not completely supported, the block
+  shifts left until it falls off the next cliff edge and the checks are
+  repeated.
+3. In its final position the square must have no gap beneath it and its
+   entire left side must touch blocks to its left (or the line `x = 0`).
    We consider two variants:
    
-   - **Strict support** – the whole bottom side must sit on a single
-     block or the ground.
+   - **Strict support** – both the bottom and left sides must touch a
+     single block or the ground/left boundary.
    - **Relaxed support** – the bottom may rest on several blocks as long
-     as their top faces form a contiguous interval of equal height.
+     as their top faces form a contiguous interval of equal height, and
+     the left side may touch several blocks whose right edges form a
+     continuous vertical segment.
 
 The union of all placed squares forms a one unit tall shape of total area
 `\sum_{n=1}^\infty 1/n^2 = \pi^2/6`.

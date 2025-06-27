@@ -73,6 +73,44 @@ class Stack:
             return len(segs) == 1
         return True
 
+    def _is_left_supported(self, x: Fraction, side: Fraction, bottom: Fraction) -> bool:
+        """Check that the entire left edge at position x is covered."""
+        intervals: List[Tuple[Fraction, Fraction]] = []
+        if x == 0:
+            intervals.append((Fraction(0), Fraction(1)))
+        for b in self.blocks:
+            if b.x + b.side == x:
+                intervals.append((b.y, b.y + b.side))
+        intervals.sort()
+        target_top = bottom + side
+        coverage = bottom
+        for l, r in intervals:
+            if r <= coverage:
+                continue
+            if l > coverage:
+                return False
+            coverage = min(target_top, r)
+            if coverage >= target_top:
+                break
+        if coverage < target_top:
+            return False
+        if self.strict:
+            count = 0
+            for l, r in intervals:
+                if l <= bottom and r >= target_top:
+                    count += 1
+            return count == 1
+        return True
+
+    def _prev_boundary(self, x: Fraction) -> Fraction:
+        boundaries = sorted({l for l, _, _ in self.segments} | {r for _, r, _ in self.segments})
+        prev = x
+        for b in boundaries:
+            if b >= x:
+                break
+            prev = b
+        return prev
+
     def _next_boundary(self, x: Fraction) -> Fraction:
         boundaries = sorted({l for l, _, _ in self.segments} | {r for _, r, _ in self.segments})
         for b in boundaries:
@@ -102,14 +140,20 @@ class Stack:
             if bottom > support:
                 bottom = support
             top = bottom + side
-            if top <= 1 and self._is_supported(x, side, bottom):
+            if top > 1:
+                next_x = self._next_boundary(x)
+                if next_x == x:
+                    bottom = support
+                    break
+                x = next_x
+                continue
+            if self._is_supported(x, side, bottom) and self._is_left_supported(x, side, bottom):
                 break
-            next_x = self._next_boundary(x)
-            if next_x == x:
-                # no more boundaries to the right, slide on ground
+            prev_x = self._prev_boundary(x)
+            if prev_x == x:
                 bottom = support
                 break
-            x = next_x
+            x = prev_x
         self.blocks.append(Block(n, side, x, bottom))
         # insert new segment and remove covered pieces of older segments
         self._insert_segment(x, x + side, bottom + side)
