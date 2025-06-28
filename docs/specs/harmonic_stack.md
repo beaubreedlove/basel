@@ -48,6 +48,8 @@ computes the first few block positions for both variants.  The script uses
 Python's `Fraction` type so that every coordinate and interval length is
 represented exactly as a rational number.
 
- A companion script (`basel/tools/render_stack.py`) renders the first N blocks as a simple
- PPM image. Run `python -m basel.tools.render_stack` to generate `stack.ppm`. Odd-numbered
-blocks appear in red and even-numbered blocks in blue on a black background.
+A companion script (`basel/tools/render_stack.py`) renders the first N blocks as a simple
+PPM image. Run `python -m basel.tools.render_stack` to generate `stack.ppm`. Odd-numbered
+blocks appear in red and even-numbered blocks in blue on a black background. The
+renderer automatically scales its output to display all blocks, even when they
+extend above height 1.

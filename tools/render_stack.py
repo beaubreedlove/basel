@@ -15,8 +15,9 @@ def load_stack(algo: str, strict: bool) -> "Stack":
 def render_ppm(stack: Stack, filename: str = "stack.ppm", scale: int = 400) -> None:
     """Render the stack to a simple PPM image file."""
     xmax = max(b.x + b.side for b in stack.blocks)
+    ymax = max(b.y + b.side for b in stack.blocks)
     width = int(scale * xmax) + 1
-    height = scale
+    height = int(scale * ymax) + 1
     # initialize black background
     pixels: List[List[Tuple[int, int, int]]] = [
         [(0, 0, 0) for _ in range(width)] for _ in range(height)
@@ -25,8 +26,8 @@ def render_ppm(stack: Stack, filename: str = "stack.ppm", scale: int = 400) -> N
         color = (255, 0, 0) if block.n % 2 else (0, 0, 255)
         x0 = int(scale * block.x)
         x1 = int(scale * (block.x + block.side))
-        y0 = int(scale * (1 - (block.y + block.side)))
-        y1 = int(scale * (1 - block.y))
+        y0 = int(scale * (ymax - (block.y + block.side)))
+        y1 = int(scale * (ymax - block.y))
         for y in range(max(y0, 0), min(y1, height)):
             for x in range(max(x0, 0), min(x1, width)):
                 pixels[y][x] = color

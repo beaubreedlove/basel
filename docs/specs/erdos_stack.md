@@ -21,3 +21,7 @@ This procedure deterministically assigns a location to every block.  The method
 is unrelated to the physical falling and sliding rules of the harmonic stack but
 produces a nested family of squares that can be rendered with the same
 visualization script.
+
+A reference implementation lives in `basel/algorithms/erdos.py`.  Use
+`basel/tools/render_stack.py` with `--algo erdos` to visualize the first N
+blocks.  The renderer scales automatically to include all blocks.
