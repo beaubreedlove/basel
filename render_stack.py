@@ -1,7 +1,12 @@
 from __future__ import annotations
 from fractions import Fraction
 from typing import Tuple, List
-from .stack_blocks import Stack, Block
+try:
+    # Support running as a module (python -m basel.render_stack)
+    from .stack_blocks import Stack, Block
+except ImportError:  # pragma: no cover - for direct execution
+    # Fallback for running as a script from the basel directory
+    from stack_blocks import Stack, Block
 
 
 def render_ppm(stack: Stack, filename: str = "stack.ppm", scale: int = 400) -> None:
