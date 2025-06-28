@@ -1,6 +1,6 @@
 # Open Problems
 
-This document collects questions and answers that arise while studying the harmonic square stack described in `harmonic_stack.md`.
+This document collects questions and answers that arise while studying the harmonic square stack described in `specs/harmonic_stack.md`.
 
 ## Length of the segment along `y = 1`
 

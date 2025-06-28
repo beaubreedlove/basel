@@ -43,11 +43,11 @@ which block each new block eventually sits on.
 * How do the strict and relaxed variants differ when a block lands on a
   ledge made up of multiple blocks of the same height?
 
- A small Python script (`basel/stack_blocks.py`) accompanies this document and
+ A small Python module (`basel/algorithms/harmonic.py`) accompanies this document and
 computes the first few block positions for both variants.  The script uses
 Python's `Fraction` type so that every coordinate and interval length is
 represented exactly as a rational number.
 
- A companion script (`basel/render_stack.py`) renders the first N blocks as a simple
- PPM image. Run `python basel/render_stack.py` to generate `stack.ppm`. Odd-numbered
+ A companion script (`basel/tools/render_stack.py`) renders the first N blocks as a simple
+ PPM image. Run `python -m basel.tools.render_stack` to generate `stack.ppm`. Odd-numbered
 blocks appear in red and even-numbered blocks in blue on a black background.
