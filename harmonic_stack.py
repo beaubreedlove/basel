@@ -90,15 +90,6 @@ class Stack:
             return count == 1
         return True
 
-    def _prev_boundary(self, x: Fraction) -> Fraction:
-        boundaries = sorted({l for l, _, _ in self.segments} | {r for _, r, _ in self.segments})
-        prev = x
-        for b in boundaries:
-            if b >= x:
-                break
-            prev = b
-        return prev
-
     def _next_boundary(self, x: Fraction) -> Fraction:
         boundaries = sorted({l for l, _, _ in self.segments} | {r for _, r, _ in self.segments})
         for b in boundaries:
@@ -148,11 +139,11 @@ class Stack:
                 continue
             if self._is_supported(x, side, bottom) and self._is_left_supported(x, side, bottom):
                 break
-            prev_x = self._prev_boundary(x)
-            if prev_x == x:
+            next_x = self._next_boundary(x)
+            if next_x == x:
                 bottom = support
                 break
-            x = prev_x
+            x = next_x
         self.blocks.append(Block(n, side, x, bottom))
         self._insert_segment(x, x + side, bottom + side)
         self._merge()

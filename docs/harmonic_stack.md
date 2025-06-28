@@ -17,7 +17,7 @@ statement. Each step adds an axis aligned square of side `1/n` for
   blocks. It continues sliding and falling until the entire square lies
   no higher than the line `y = 1`.  If, once it has reached this height,
   either its bottom or left side is not completely supported, the block
-  shifts left until it falls off the next cliff edge and the checks are
+  shifts right until it falls off the next cliff edge and the checks are
   repeated.
 3. In its final position the square must have no gap beneath it and its
    entire left side must touch blocks to its left (or the line `x = 0`).
