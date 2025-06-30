@@ -21,10 +21,6 @@ Arguments:
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
 
-**Note:** The current implementation has a bug that allows gaps to form between
-vertical towers. As a result, the top boundary of the stack sometimes rises after
-falling instead of decreasing monotonically.
-
 ### Available algorithms
 
 - [`harmonic`](docs/specs/harmonic_stack.md) – falling and sliding rules
