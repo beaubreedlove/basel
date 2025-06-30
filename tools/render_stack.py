@@ -100,7 +100,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--algo",
-        default="harmonic",
+        default="sylvester",
         help="stacking algorithm (module name in basel.algorithms)",
     )
     parser.add_argument(

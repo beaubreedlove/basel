@@ -165,7 +165,7 @@ class Stack:
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Simulate harmonic block stacking")
+    parser = argparse.ArgumentParser(description="Simulate Sylvester block stacking")
     parser.add_argument("N", type=int, nargs="?", default=10, help="number of blocks to simulate")
     parser.add_argument("--relaxed", action="store_true", help="use relaxed support rule")
     args = parser.parse_args()

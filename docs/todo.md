@@ -1,6 +1,6 @@
 # TODO List
 
-This file outlines future directions and open questions for studying the harmonic square stack and its simulation code.
+This file outlines future directions and open questions for studying the Sylvester square stack and its simulation code.
 
 1. **Identify the first point of divergence between strict and relaxed stacking.**
    - 1a. Determine if any block eventually settles on more than two blocks of the same height, sliding across an extended plateau.

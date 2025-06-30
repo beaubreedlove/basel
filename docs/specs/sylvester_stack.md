@@ -1,4 +1,4 @@
-# Harmonic Square Stack
+# Sylvester Square Stack
 
 This document formalizes the iterative stacking process described in the problem
 statement. Each step adds an axis aligned square of side `1/n` for
@@ -43,7 +43,7 @@ which block each new block eventually sits on.
 * How do the strict and relaxed variants differ when a block lands on a
   ledge made up of multiple blocks of the same height?
 
- A small Python module (`basel/algorithms/harmonic.py`) accompanies this document and
+ A small Python module (`basel/algorithms/sylvester.py`) accompanies this document and
 computes the first few block positions for both variants.  The script uses
 Python's `Fraction` type so that every coordinate and interval length is
 represented exactly as a rational number.
@@ -54,5 +54,5 @@ The renderer automatically scales its output to display all blocks, even when th
 extend above height 1. Blocks can be colored using either a cycling palette or a
 gradient from red to blue. Pass `--renderer gradient` for the gradient style or
 adjust the number of cycling colors with `--colors N`. Pass `--relaxed` when using
-the harmonic algorithm if you wish to enable the relaxed placement rules; otherwise
+the sylvester algorithm if you wish to enable the relaxed placement rules; otherwise
 strict support is used.

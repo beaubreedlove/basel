@@ -1,7 +1,7 @@
 # Erdos Block Stacking
 
 This document defines the *Erdos method* for placing axis aligned square blocks.
-It mirrors the terminology used in the harmonic stack specification.
+It mirrors the terminology used in the Sylvester stack specification.
 
 ## Construction
 
@@ -18,7 +18,7 @@ It mirrors the terminology used in the harmonic stack specification.
    side length `s`.
 
 This procedure deterministically assigns a location to every block.  The method
-is unrelated to the physical falling and sliding rules of the harmonic stack but
+is unrelated to the physical falling and sliding rules of the Sylvester stack but
 produces a nested family of squares that can be rendered with the same
 visualization script.
 

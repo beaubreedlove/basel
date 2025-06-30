@@ -16,7 +16,7 @@ python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
 Arguments:
 
 * `N` – number of blocks to render (default: `40`)
-* `--algo` – algorithm to use (default: `harmonic`)
+* `--algo` – algorithm to use (default: `sylvester`)
 * `--output` – name of the generated PPM file (default: `stack.ppm`)
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
@@ -26,7 +26,7 @@ Consult the relevant specification for details.
 
 ### Available algorithms
 
-- [`harmonic`](docs/specs/harmonic_stack.md) – falling and sliding rules
+- [`sylvester`](docs/specs/sylvester_stack.md) – falling and sliding rules
 - [`erdos`](docs/specs/erdos_stack.md) – binary expansion placement
 - [`rational`](docs/specs/rational_stack.md) – doubles blocks when direction repeats
 
