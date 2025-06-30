@@ -1,6 +1,7 @@
 from __future__ import annotations
 from fractions import Fraction
 from typing import Tuple, List
+from decimal import Decimal, localcontext
 import importlib
 
 def load_stack(algo: str, strict: bool) -> "Stack":
@@ -38,6 +39,13 @@ COLOR_PALETTE = [
     (244, 53, 158),
     (156, 89, 53),
 ]
+
+
+def _fmt(fr: Fraction) -> str:
+    """Format a Fraction as a high precision decimal string."""
+    with localcontext() as ctx:
+        ctx.prec = 50
+        return str(Decimal(fr.numerator) / Decimal(fr.denominator))
 
 
 def _gradient_color(index: int, total: int) -> Tuple[int, int, int]:
@@ -91,6 +99,35 @@ def render_ppm(
             fh.write("\n")
 
 
+def render_svg(
+    stack: Stack,
+    filename: str = "stack.svg",
+    renderer: str = "cycle",
+    colors: int = 2,
+) -> None:
+    """Render the stack to a simple SVG vector image."""
+    xmax = max(b.x + b.side for b in stack.blocks)
+    ymax = max(b.y + b.side for b in stack.blocks)
+    total_blocks = len(stack.blocks)
+    color_count = max(1, min(colors, len(COLOR_PALETTE)))
+    with open(filename, "w") as fh:
+        fh.write(
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {_fmt(xmax)} {_fmt(ymax)}">\n'
+        )
+        fh.write('<rect width="100%" height="100%" fill="black" />\n')
+        for block in stack.blocks:
+            if renderer == "gradient":
+                color = _gradient_color(block.n, total_blocks)
+            else:
+                color = _cycle_color(block.n, color_count)
+            fh.write(
+                f'<rect x="{_fmt(block.x)}" y="{_fmt(ymax - (block.y + block.side))}" '
+                f'width="{_fmt(block.side)}" height="{_fmt(block.side)}" '
+                f'fill="rgb({color[0]},{color[1]},{color[2]})" />\n'
+            )
+        fh.write("</svg>\n")
+
+
 def main() -> None:
     import argparse
 
@@ -120,17 +157,32 @@ def main() -> None:
         default=2,
         help="number of colors to cycle through (for cycle renderer)",
     )
-    parser.add_argument("--output", default="stack.ppm", help="output PPM file")
+    parser.add_argument(
+        "--vector",
+        action="store_true",
+        help="write an SVG vector image instead of a PPM file",
+    )
+    parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
 
     stack = load_stack(args.algo, strict=not args.relaxed)
     stack.build(args.N)
-    render_ppm(
-        stack,
-        filename=args.output,
-        renderer=args.renderer,
-        colors=args.colors,
-    )
+    if args.output is None:
+        args.output = "stack.svg" if args.vector else "stack.ppm"
+    if args.vector:
+        render_svg(
+            stack,
+            filename=args.output,
+            renderer=args.renderer,
+            colors=args.colors,
+        )
+    else:
+        render_ppm(
+            stack,
+            filename=args.output,
+            renderer=args.renderer,
+            colors=args.colors,
+        )
 
 
 if __name__ == "__main__":
