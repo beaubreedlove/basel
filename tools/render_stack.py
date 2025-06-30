@@ -133,11 +133,11 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Render block stacks")
     parser.add_argument(
-        "N", type=int, nargs="?", default=40, help="number of blocks to render"
+        "N", type=int, nargs="?", default=100, help="number of blocks to render"
     )
     parser.add_argument(
         "--algo",
-        default="sylvester",
+        default="rational",
         help="stacking algorithm (module name in basel.algorithms)",
     )
     parser.add_argument(

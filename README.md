@@ -25,8 +25,8 @@ python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
 
 Arguments:
 
-* `N` – number of squares to render (default: `40`)
-* `--algo` – algorithm to use (default: `sylvester`)
+* `N` – number of squares to render (default: `100`)
+* `--algo` – algorithm to use (default: `rational`)
 * `--output` – name of the generated image file (default: `stack.ppm` or
   `stack.svg` when `--vector` is used)
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
