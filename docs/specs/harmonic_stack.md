@@ -52,4 +52,6 @@ A companion script (`basel/tools/render_stack.py`) renders the first N blocks as
 PPM image. Run `python -m basel.tools.render_stack` to generate `stack.ppm`. Odd-numbered
 blocks appear in red and even-numbered blocks in blue on a black background. The
 renderer automatically scales its output to display all blocks, even when they
-extend above height 1.
+extend above height 1. Pass `--relaxed` to the script when using the harmonic
+algorithm if you wish to enable the relaxed placement rules; otherwise strict
+support is used.
