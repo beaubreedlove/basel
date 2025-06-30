@@ -12,7 +12,55 @@ def load_stack(algo: str, strict: bool) -> "Stack":
         return stack_class()
 
 
-def render_ppm(stack: Stack, filename: str = "stack.ppm", scale: int = 400) -> None:
+COLOR_PALETTE = [
+    (51, 102, 204),  # blue
+    (220, 57, 18),   # red
+    (255, 153, 0),   # orange
+    (16, 150, 24),   # green
+    (153, 0, 153),   # purple
+    (0, 153, 198),   # cyan
+    (221, 68, 119),
+    (102, 170, 0),
+    (184, 46, 46),
+    (49, 99, 149),
+    (153, 68, 153),
+    (34, 170, 153),
+    (170, 170, 17),
+    (102, 51, 204),
+    (230, 115, 0),
+    (139, 7, 7),
+    (50, 146, 98),
+    (85, 116, 166),
+    (59, 62, 172),
+    (183, 115, 34),
+    (22, 214, 32),
+    (185, 19, 131),
+    (244, 53, 158),
+    (156, 89, 53),
+]
+
+
+def _gradient_color(index: int, total: int) -> Tuple[int, int, int]:
+    if total <= 1:
+        ratio = 0.0
+    else:
+        ratio = (index - 1) / (total - 1)
+    r = int(round(255 * (1 - ratio)))
+    b = int(round(255 * ratio))
+    return r, 0, b
+
+
+def _cycle_color(index: int, count: int) -> Tuple[int, int, int]:
+    return COLOR_PALETTE[(index - 1) % count]
+
+
+def render_ppm(
+    stack: Stack,
+    filename: str = "stack.ppm",
+    scale: int = 400,
+    renderer: str = "cycle",
+    colors: int = 2,
+) -> None:
     """Render the stack to a simple PPM image file."""
     xmax = max(b.x + b.side for b in stack.blocks)
     ymax = max(b.y + b.side for b in stack.blocks)
@@ -22,8 +70,13 @@ def render_ppm(stack: Stack, filename: str = "stack.ppm", scale: int = 400) -> N
     pixels: List[List[Tuple[int, int, int]]] = [
         [(0, 0, 0) for _ in range(width)] for _ in range(height)
     ]
+    total_blocks = len(stack.blocks)
+    color_count = max(1, min(colors, len(COLOR_PALETTE)))
     for block in stack.blocks:
-        color = (255, 0, 0) if block.n % 2 else (0, 0, 255)
+        if renderer == "gradient":
+            color = _gradient_color(block.n, total_blocks)
+        else:
+            color = _cycle_color(block.n, color_count)
         x0 = int(scale * block.x)
         x1 = int(scale * (block.x + block.side))
         y0 = int(scale * (ymax - (block.y + block.side)))
@@ -55,12 +108,29 @@ def main() -> None:
         action="store_true",
         help="use relaxed rules where supported",
     )
+    parser.add_argument(
+        "--renderer",
+        choices=["cycle", "gradient"],
+        default="cycle",
+        help="coloring method",
+    )
+    parser.add_argument(
+        "--colors",
+        type=int,
+        default=2,
+        help="number of colors to cycle through (for cycle renderer)",
+    )
     parser.add_argument("--output", default="stack.ppm", help="output PPM file")
     args = parser.parse_args()
 
     stack = load_stack(args.algo, strict=not args.relaxed)
     stack.build(args.N)
-    render_ppm(stack, args.output)
+    render_ppm(
+        stack,
+        filename=args.output,
+        renderer=args.renderer,
+        colors=args.colors,
+    )
 
 
 if __name__ == "__main__":
