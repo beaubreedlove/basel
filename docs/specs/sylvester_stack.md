@@ -26,9 +26,22 @@ statement. Each step adds an axis aligned square of side `1/n` for
    - **Strict support** – both the bottom and left sides must touch a
      single block or the ground/left boundary.
    - **Relaxed support** – the bottom may rest on several blocks as long
-     as their top faces form a contiguous interval of equal height, and
-     the left side may touch several blocks whose right edges form a
-     continuous vertical segment.
+    as their top faces form a contiguous interval of equal height, and
+    the left side may touch several blocks whose right edges form a
+    continuous vertical segment.
+
+The distinction between these variants arises quite early in the
+construction.  Immediately to the right of the 2‑block the stack contains
+a 4‑block topped by a 5‑block, which in turn supports the 20‑block.
+Both configurations reach exactly height `1/2`, leaving a plateau split
+down the seam between the 2‑ and 20‑blocks.  We must therefore decide
+whether a later block may balance across that seam—allowed in the
+relaxed version but forbidden in the strict one.  It is not yet known
+whether this is the only such occurrence or if the pattern repeats
+finitely or infinitely many times.  Likewise, it remains unclear
+whether a vertical seam can arise from a row of blocks resting on a
+block of equal length and, if so, whether that happens only finitely
+often or infinitely many times.
 
 The union of all placed squares forms a one unit tall shape of total area
 `\sum_{n=1}^\infty 1/n^2 = \pi^2/6`.
