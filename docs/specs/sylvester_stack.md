@@ -25,11 +25,6 @@ statement. Each step adds an axis aligned square of side `1/n` for
    
    - **Strict support** – both the bottom and left sides must touch a
      single block or the ground/left boundary.
-   - **Relaxed support** – the bottom may rest on several blocks as long
-    as their top faces form a contiguous interval of equal height, and
-    the left side may touch several blocks whose right edges form a
-    continuous vertical segment.
-     single square or the ground/left boundary.
    - **Relaxed support** – the bottom may rest on several squares as long
      as their top faces form a contiguous interval of equal height, and
      the left side may touch several squares whose right edges form a
