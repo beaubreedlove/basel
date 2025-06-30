@@ -1,7 +1,7 @@
 # Basel
 
 This project collects code and notes from my attempt to construct a geometric
-argument for the **Basel problem**.  The problem asks for the exact value of the
+proof for the **Basel problem**.  The problem asks for the exact value of the
 infinite sum
 
 $$\sum_{n=1}^{\infty} \frac{1}{n^2} = 1 + \frac{1}{2^2} + \frac{1}{3^2} + \cdots = \frac{\pi^2}{6}.$$
@@ -15,8 +15,7 @@ shapes for further exploration.  Individual implementations live in
 
 The helper script `tools/render_stack.py` visualizes any of the algorithms. It
 produces a PPM image of the first *N* squares by default and automatically scales
-the output so all squares remain visible even if the stack extends above
-height 1.  Pass `--vector` to generate an SVG instead for unlimited zooming
+the output so all squares remain visible.  Pass `--vector` to generate an SVG instead for unlimited zooming
 precision.
 
 ```
@@ -50,10 +49,10 @@ begins at $(S, 1)$ where
 
 $$S = 1 + \tfrac16 + \tfrac1{42} + \tfrac1{1806} + \cdots,$$
 
-and the denominators $1, 6, 42, 1806, \ldots$ come from
+and the denominators $1, 6, 42, 1806, \ldots$ are one less than each term of
 [Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence)
-$2, 3, 7, 43, 1807, \ldots$.  Each denominator after $6$ is obtained by
-multiplying the previous one by the next integer.  The resulting shape
+$2, 3, 7, 43, 1807, \ldots$ except the 2nd term.  Each denominator after $6$ is obtained by
+multiplying the previous one by the next integer (e.g., $1807 = 42 * 43$). The resulting shape
 resembles a fractal with endlessly finer wiggles.
 
 Seeking a configuration with clearer structure, I next tried the **Erdos**
@@ -71,10 +70,10 @@ geometry difficult to analyze.
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
 placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
-same direction.  Remaining odd squares fill the unused corners from bottom right
+same direction.  Remaining odd squares fill the unused corners in order from bottom right
 to top left.  Infinite paths that repeat the same direction generate series of
-the form $1/n + 1/(2n) + 1/(4n) + \cdots = 2/n$, ensuring every such vertex is
-rational.  This approach is still under investigation.
+the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
+rational.  This result is still under investigation.
 
 ### Examples
 
