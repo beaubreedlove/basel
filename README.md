@@ -7,3 +7,8 @@ corresponding specification under `docs/specs/`.  The provided rendering tool in
 adjusts the vertical scale so blocks that extend above height 1 remain visible.
 
 **Note:** The current implementation has a bug that allows gaps to form between vertical towers. As a result, the top boundary of the stack sometimes rises after falling instead of decreasing monotonically.
+
+Available algorithms:
+- `harmonic` -- falling and sliding rules
+- `erdos` -- binary expansion placement
+- `rational` -- doubles blocks when direction repeats
