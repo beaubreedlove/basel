@@ -43,6 +43,8 @@ whether a vertical seam can arise from a row of blocks resting on a
 block of equal length and, if so, whether that happens only finitely
 often or infinitely many times.
 
+![Sylvester stack example](../images/sylvester.svg)
+
 The union of all placed squares forms a one unit tall shape of total area
 `\sum_{n=1}^\infty 1/n^2 = \pi^2/6`.
 
@@ -72,3 +74,7 @@ gradient style or adjust the number of cycling colors with `--colors N`. By
 default the Sylvester algorithm leaves a small gap above each block. Use
 `--fill` to pack blocks flush against their supports or `--fill-with-seams` to
 allow seams in the packed version.
+
+![Filled Sylvester stack](../images/sylvester_fill.svg)
+
+![Filled with seams](../images/sylvester_fill_with_seams.svg)

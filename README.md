@@ -56,6 +56,8 @@ $2, 3, 7, 43, 1807, \ldots$ except the 2nd term.  Each denominator after $6$ is 
 multiplying the previous one by the next integer (e.g., $1807 = 42 * 43$). The resulting shape
 resembles a fractal with endlessly finer wiggles.
 
+![Sylvester stack example](docs/images/sylvester.svg)
+
 Seeking a configuration with clearer structure, I next tried the **Erdos**
 algorithm.  Rest the $1$‑square against the ground and a wall to create two
 corners.  Place the $2$‑square in the lower corner and the $3$‑square above it.
@@ -68,6 +70,8 @@ $1 + \tfrac13 + \tfrac17 + \tfrac1{15} + \tfrac1{2^n-1} + \cdots$.  This
 irrational value and related series appear throughout the boundary, making the
 geometry difficult to analyze.
 
+![Erdos stack example](docs/images/erdos.svg)
+
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
 placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
@@ -75,6 +79,8 @@ same direction, while the square $2n+1$ is positioned in the opposite
 direction.  Each round therefore expands every square into two children.  Infinite paths that
 repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
 rational.
+
+![Rational stack example](docs/images/rational.svg)
 
 ### Examples
 
