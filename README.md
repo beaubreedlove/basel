@@ -23,9 +23,9 @@ python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
     [--renderer {cycle,gradient}] [--colors NUM] [--open]
 ```
 
-Run this command from the directory **above** the project so Python can import
-the ``basel`` package.  Alternatively execute ``python tools/render_stack.py``
-from inside the repository.
+Run this command from the project root using ``python tools/render_stack.py``.
+The ``python -m basel.tools.render_stack`` form also works when the project
+directory is on ``PYTHONPATH``.
 
 Arguments:
 
