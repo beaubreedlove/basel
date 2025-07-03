@@ -19,8 +19,8 @@ the output so all squares remain visible.  Pass `--vector` to generate an SVG in
 precision.
 
 ```
-python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM]
+python -m tools.render_stack [N] --algo NAME [--output FILE] \
+    [--renderer {cycle,gradient}] [--colors NUM] [--open]
 ```
 
 Arguments:
@@ -32,6 +32,7 @@ Arguments:
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--vector` – output an SVG vector image instead of PPM
+* `--open` – use open placement rules when supported (e.g. `sylvester`)
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.

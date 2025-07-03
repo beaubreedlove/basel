@@ -35,13 +35,20 @@ class Stack:
         return Fraction(0)
 
     # segments covering [start, end)
-    def _segments_between(self, start: Fraction, end: Fraction) -> List[Tuple[Fraction, Fraction, Fraction]]:
+    def _segments_between(
+        self, start: Fraction, end: Fraction, clip: bool = True
+    ) -> List[Tuple[Fraction, Fraction, Fraction]]:
         segs: List[Tuple[Fraction, Fraction, Fraction]] = []
         for l, r, h in self.segments:
             if r <= start or l >= end:
                 continue
-            segs.append((max(l, start), min(r, end), h))
+            if clip:
+                segs.append((max(l, start), min(r, end), h))
+            else:
+                segs.append((l, r, h))
         segs.sort()
+        if not clip:
+            return segs
         # fill gaps with ground
         result: List[Tuple[Fraction, Fraction, Fraction]] = []
         coverage = start
@@ -60,19 +67,28 @@ class Stack:
 
     def _is_supported(self, start: Fraction, side: Fraction, bottom: Fraction) -> bool:
         end = start + side
-        segs = self._segments_between(start, end)
+        segs = []
         coverage = start
-        for l, r, h in segs:
-            if l > coverage:
+        right_extent = None
+        for l, r, h in self.segments:
+            if r <= coverage:
+                continue
+            if l >= end:
+                break
+            seg_left = max(l, start)
+            seg_right = min(r, end)
+            if seg_left > coverage:
                 return False
             if h != bottom:
                 return False
-            coverage = r
+            segs.append((seg_left, seg_right, h))
+            coverage = seg_right
+            if seg_right == end:
+                right_extent = r
+        if coverage < end:
+            return False
         if self.open_bounds and bottom != Fraction(0):
-            if coverage <= end:
-                return False
-        else:
-            if coverage < end:
+            if right_extent is None or right_extent <= end:
                 return False
         if self.strict:
             return len(segs) == 1
@@ -89,19 +105,21 @@ class Stack:
         intervals.sort()
         target_top = bottom + side
         coverage = bottom
+        top_extent = None
         for l, r in intervals:
             if r <= coverage:
                 continue
             if l > coverage:
                 return False
-            coverage = min(target_top, r)
-            if coverage >= target_top:
+            if r >= target_top:
+                top_extent = r
+                coverage = target_top
                 break
+            coverage = r
+        if coverage < target_top:
+            return False
         if self.open_bounds and x != Fraction(0):
-            if coverage <= target_top:
-                return False
-        else:
-            if coverage < target_top:
+            if top_extent is None or top_extent <= target_top:
                 return False
         if self.strict:
             count = 0
