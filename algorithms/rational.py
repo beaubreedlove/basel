@@ -33,7 +33,6 @@ class Stack:
         self._map[2] = b2
         self._map[3] = b3
         self._current_round: List[int] = [2, 3]
-        self._next_odd = 5
 
     def _add_block(self, n: int, x: Fraction, y: Fraction, direction: str, parent: int) -> None:
         block = Block(n, Fraction(1, n), x, y, direction, parent)
@@ -45,43 +44,30 @@ class Stack:
             return
         while max(self._map) < count:
             next_round: List[int] = []
-            # doubling stage
-            for n in self._current_round:
-                child = 2 * n
-                b = self._map[n]
-                if b.direction == "right":
-                    x = b.x + b.side
-                    y = b.y
-                    orient = "right"
-                else:
-                    x = b.x
-                    y = b.y + b.side
-                    orient = "up"
-                if child <= count:
-                    self._add_block(child, x, y, orient, n)
-                    next_round.append(child)
-            # gather gaps for filling stage
-            gaps = []
             for n in self._current_round:
                 b = self._map[n]
+                even = 2 * n
+                odd = even + 1
                 if b.direction == "right":
-                    x = b.x
-                    y = b.y + b.side
-                    orient = "up"
+                    x_even = b.x + b.side
+                    y_even = b.y
+                    orient_even = "right"
+                    x_odd = b.x
+                    y_odd = b.y + b.side
+                    orient_odd = "up"
                 else:
-                    x = b.x + b.side
-                    y = b.y
-                    orient = "right"
-                gaps.append((y, -x, n, orient))
-            gaps.sort()
-            for y, negx, parent, orient in gaps:
-                if self._next_odd > count:
-                    break
-                x = -negx
-                n = self._next_odd
-                self._next_odd += 2
-                self._add_block(n, x, y, orient, parent)
-                next_round.append(n)
+                    x_even = b.x
+                    y_even = b.y + b.side
+                    orient_even = "up"
+                    x_odd = b.x + b.side
+                    y_odd = b.y
+                    orient_odd = "right"
+                if even <= count:
+                    self._add_block(even, x_even, y_even, orient_even, n)
+                    next_round.append(even)
+                if odd <= count:
+                    self._add_block(odd, x_odd, y_odd, orient_odd, n)
+                    next_round.append(odd)
             self._current_round = next_round
 
     def summary(self) -> str:

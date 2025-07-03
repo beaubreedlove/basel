@@ -20,7 +20,7 @@ precision.
 
 ```
 python -m tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM]
+    [--renderer {cycle,gradient}] [--colors NUM] [--numbers]
 ```
 
 Arguments:
@@ -32,6 +32,7 @@ Arguments:
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--vector` – output an SVG vector image instead of PPM
+* `--numbers` – draw block numbers on the squares
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
@@ -70,10 +71,10 @@ geometry difficult to analyze.
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
 placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
-same direction.  Remaining odd squares fill the unused corners in order from bottom right
-to top left.  Infinite paths that repeat the same direction generate series of
-the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
-rational.  This result is still under investigation.
+same direction, while the square $2n+1$ is positioned in the opposite
+direction.  Each round therefore expands every square into two children.  Infinite paths that
+repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
+rational.
 
 ### Examples
 
@@ -87,6 +88,12 @@ Render 20 squares cycling through 5 colors:
 
 ```
 python -m tools.render_stack 20 --colors 5
+```
+
+Render blocks labeled with their numbers:
+
+```
+python -m basel.tools.render_stack 10 --numbers
 ```
 
 Generate a vector image instead of a PPM:

@@ -70,12 +70,132 @@ def _cycle_color(index: int, count: int) -> Tuple[int, int, int]:
     return COLOR_PALETTE[(index - 1) % count]
 
 
+def _text_color(color: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    """Return black or white text color depending on block brightness."""
+    brightness = 0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2]
+    return (0, 0, 0) if brightness > 128 else (255, 255, 255)
+
+
+_DIGITS = {
+    "0": [
+        "#####",
+        "#   #",
+        "#   #",
+        "#   #",
+        "#####",
+    ],
+    "1": [
+        "  #  ",
+        " ##  ",
+        "  #  ",
+        "  #  ",
+        "#####",
+    ],
+    "2": [
+        "#####",
+        "    #",
+        "#####",
+        "#    ",
+        "#####",
+    ],
+    "3": [
+        "#####",
+        "    #",
+        "#####",
+        "    #",
+        "#####",
+    ],
+    "4": [
+        "#   #",
+        "#   #",
+        "#####",
+        "    #",
+        "    #",
+    ],
+    "5": [
+        "#####",
+        "#    ",
+        "#####",
+        "    #",
+        "#####",
+    ],
+    "6": [
+        "#####",
+        "#    ",
+        "#####",
+        "#   #",
+        "#####",
+    ],
+    "7": [
+        "#####",
+        "    #",
+        "    #",
+        "    #",
+        "    #",
+    ],
+    "8": [
+        "#####",
+        "#   #",
+        "#####",
+        "#   #",
+        "#####",
+    ],
+    "9": [
+        "#####",
+        "#   #",
+        "#####",
+        "    #",
+        "#####",
+    ],
+}
+
+
+def _draw_number(
+    pixels: List[List[Tuple[int, int, int]]],
+    text: str,
+    x0: int,
+    y0: int,
+    x1: int,
+    y1: int,
+    color: Tuple[int, int, int],
+) -> None:
+    """Draw ``text`` centered inside the box (x0, y0, x1, y1)."""
+    char_w = 5
+    char_h = 5
+    spacing = 1
+    box_w = x1 - x0
+    box_h = y1 - y0
+    total_w = len(text) * char_w + (len(text) - 1) * spacing
+    scale = min(box_w // total_w, box_h // char_h)
+    if scale <= 0:
+        return
+    text_w = total_w * scale
+    text_h = char_h * scale
+    start_x = x0 + (box_w - text_w) // 2
+    start_y = y0 + (box_h - text_h) // 2
+    for index, ch in enumerate(text):
+        pattern = _DIGITS.get(ch)
+        if not pattern:
+            continue
+        offset_x = start_x + index * (char_w * scale + spacing * scale)
+        for row, line in enumerate(pattern):
+            for col, c in enumerate(line):
+                if c != "#":
+                    continue
+                for dy in range(scale):
+                    for dx in range(scale):
+                        px = offset_x + col * scale + dx
+                        py = start_y + row * scale + dy
+                        if 0 <= py < len(pixels) and 0 <= px < len(pixels[0]):
+                            pixels[py][px] = color
+
 def render_ppm(
     stack: Stack,
     filename: str = "stack.ppm",
     scale: int = 400,
     renderer: str = "cycle",
     colors: int = 2,
+    numbers: bool = False,
 ) -> None:
     """Render the stack to a simple PPM image file."""
     xmax = max(b.x + b.side for b in stack.blocks)
@@ -100,6 +220,8 @@ def render_ppm(
         for y in range(max(y0, 0), min(y1, height)):
             for x in range(max(x0, 0), min(x1, width)):
                 pixels[y][x] = color
+        if numbers:
+            _draw_number(pixels, str(block.n), x0, y0, x1, y1, _text_color(color))
     with open(filename, "w") as fh:
         fh.write(f"P3\n{width} {height}\n255\n")
         for row in pixels:
@@ -112,6 +234,7 @@ def render_svg(
     filename: str = "stack.svg",
     renderer: str = "cycle",
     colors: int = 2,
+    numbers: bool = False,
 ) -> None:
     """Render the stack to a simple SVG vector image."""
     xmax = max(b.x + b.side for b in stack.blocks)
@@ -133,6 +256,20 @@ def render_svg(
                 f'width="{_fmt(block.side)}" height="{_fmt(block.side)}" '
                 f'fill="rgb({color[0]},{color[1]},{color[2]})" />\n'
             )
+            if numbers:
+                text_color = _text_color(color)
+                digits = len(str(block.n))
+                max_size = block.side * Fraction(8, 10)
+                width_based = block.side * Fraction(8, 10) / (Fraction(6, 10) * digits)
+                font_size = min(max_size, width_based)
+                fh.write(
+                    f'<text x="{_fmt(block.x + block.side / 2)}" '
+                    f'y="{_fmt(ymax - (block.y + block.side / 2))}" '
+                    f'font-size="{_fmt(font_size)}" '
+                    f'text-anchor="middle" dominant-baseline="central" '
+                    f'fill="rgb({text_color[0]},{text_color[1]},{text_color[2]})">'
+                    f'{block.n}</text>\n'
+                )
         fh.write("</svg>\n")
 
 
@@ -171,6 +308,11 @@ def main() -> None:
         help="number of colors to cycle through (for cycle renderer)",
     )
     parser.add_argument(
+        "--numbers",
+        action="store_true",
+        help="draw block numbers on the squares",
+    )
+    parser.add_argument(
         "--vector",
         action="store_true",
         help="write an SVG vector image instead of a PPM file",
@@ -198,6 +340,7 @@ def main() -> None:
             filename=args.output,
             renderer=args.renderer,
             colors=args.colors,
+            numbers=args.numbers,
         )
     else:
         render_ppm(
@@ -205,6 +348,7 @@ def main() -> None:
             filename=args.output,
             renderer=args.renderer,
             colors=args.colors,
+            numbers=args.numbers,
         )
 
 
