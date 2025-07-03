@@ -14,25 +14,25 @@ shapes for further exploration.  Individual implementations live in
 `algorithms/` with corresponding specifications under `docs/specs/`.
 
 The helper script `tools/render_stack.py` visualizes any of the algorithms. It
-produces a PPM image of the first *N* squares by default and automatically scales
-the output so all squares remain visible.  Pass `--vector` to generate an SVG instead for unlimited zooming
-precision.
+produces an SVG vector image of the first *N* squares by default and
+automatically scales the output so all squares remain visible. Pass `--binary`
+to generate a PPM bitmap instead for simple pixel graphics.
 
 ```
 python -m tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM] [--numbers]
+    [--coloring {cycle,gradient}] [--colors NUM] [--no-numbers] [--binary]
 ```
 
 Arguments:
 
 * `N` – number of squares to render (default: `100`)
 * `--algo` – algorithm to use (default: `rational`)
-* `--output` – name of the generated image file (default: `stack.ppm` or
-  `stack.svg` when `--vector` is used)
-* `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
+* `--output` – name of the generated image file (default: `stack.svg` or
+  `stack.ppm` when `--binary` is used)
+* `--coloring` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
-* `--vector` – output an SVG vector image instead of PPM
-* `--numbers` – draw block numbers on the squares
+* `--binary` – output a PPM image instead of SVG
+* `--no-numbers` – omit block numbers on the squares
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
@@ -81,7 +81,7 @@ rational.
 Render 50 squares using the gradient coloring:
 
 ```
-python -m tools.render_stack 50 --renderer gradient
+python -m tools.render_stack 50 --coloring gradient
 ```
 
 Render 20 squares cycling through 5 colors:
@@ -90,14 +90,14 @@ Render 20 squares cycling through 5 colors:
 python -m tools.render_stack 20 --colors 5
 ```
 
-Render blocks labeled with their numbers:
+Render blocks without numbers:
 
 ```
-python -m basel.tools.render_stack 10 --numbers
+python -m basel.tools.render_stack 10 --no-numbers
 ```
 
-Generate a vector image instead of a PPM:
+Generate a PPM image instead of a vector SVG:
 
 ```
-python -m tools.render_stack 20 --vector
+python -m tools.render_stack 20 --binary
 ```

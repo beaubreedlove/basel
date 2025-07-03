@@ -62,11 +62,12 @@ type so that every coordinate and interval length is represented exactly as a
 rational number.
 
 A companion script (`tools/render_stack.py`) renders the first N squares as an
-image file. Run `python -m tools.render_stack` to generate `stack.ppm` by
-default. Refer to the project README for additional output options.
+image file. Run `python -m tools.render_stack` to generate `stack.svg` by
+default. Pass `--binary` to obtain `stack.ppm` instead. Refer to the project
+README for additional output options.
 The renderer automatically scales its output to display all squares, even when
 they extend above height 1. Squares can be colored using either a cycling
-palette or a gradient from red to blue. Pass `--renderer gradient` for the
+palette or a gradient from red to blue. Pass `--coloring gradient` for the
 gradient style or adjust the number of cycling colors with `--colors N`. By
 default the Sylvester algorithm leaves a small gap above each block. Use
 `--fill` to pack blocks flush against their supports or `--fill-with-seams` to
