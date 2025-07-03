@@ -149,9 +149,14 @@ def main() -> None:
         help="stacking algorithm (module name in algorithms)",
     )
     parser.add_argument(
-        "--relaxed",
+        "--fill",
         action="store_true",
-        help="use relaxed rules where supported",
+        help="pack blocks flush when using the sylvester algorithm",
+    )
+    parser.add_argument(
+        "--fill-with-seams",
+        action="store_true",
+        help="allow seams in the packed sylvester variant",
     )
     parser.add_argument(
         "--renderer",
@@ -166,11 +171,6 @@ def main() -> None:
         help="number of colors to cycle through (for cycle renderer)",
     )
     parser.add_argument(
-        "--open",
-        action="store_true",
-        help="use open placement rules when supported",
-    )
-    parser.add_argument(
         "--vector",
         action="store_true",
         help="write an SVG vector image instead of a PPM file",
@@ -178,7 +178,17 @@ def main() -> None:
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
 
-    stack = load_stack(args.algo, strict=not args.relaxed, open_bounds=args.open)
+    if args.algo == "sylvester":
+        if args.fill_with_seams:
+            stack = load_stack(
+                "sylvester_with_seams", strict=False, open_bounds=False
+            )
+        else:
+            stack = load_stack(
+                "sylvester", strict=True, open_bounds=not args.fill
+            )
+    else:
+        stack = load_stack(args.algo, strict=True, open_bounds=False)
     stack.build(args.N)
     if args.output is None:
         args.output = "stack.svg" if args.vector else "stack.ppm"

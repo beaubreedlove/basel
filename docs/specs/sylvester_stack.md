@@ -56,18 +56,18 @@ which square each new square eventually sits on.
 * How do the strict and relaxed variants differ when a square lands on a
   ledge made up of multiple squares of the same height?
 
- A small Python module (`algorithms/sylvester.py`) accompanies this document and
-computes the first few square positions for both variants.  The script uses
-Python's `Fraction` type so that every coordinate and interval length is
-represented exactly as a rational number.
+A small Python module (`algorithms/sylvester.py`) accompanies this document and
+computes the first few square positions.  The script uses Python's `Fraction`
+type so that every coordinate and interval length is represented exactly as a
+rational number.
 
 A companion script (`tools/render_stack.py`) renders the first N squares as an
 image file. Run `python -m tools.render_stack` to generate `stack.ppm` by
 default. Refer to the project README for additional output options.
-The renderer automatically scales its output to display all squares, even when they
-extend above height 1. Squares can be colored using either a cycling palette or a
-gradient from red to blue. Pass `--renderer gradient` for the gradient style or
-adjust the number of cycling colors with `--colors N`. Pass `--relaxed` when using
-the sylvester algorithm if you wish to enable the relaxed placement rules; otherwise
-strict support is used. The `--open` flag avoids blocks lining up exactly with the
-top or right edges of their supports.
+The renderer automatically scales its output to display all squares, even when
+they extend above height 1. Squares can be colored using either a cycling
+palette or a gradient from red to blue. Pass `--renderer gradient` for the
+gradient style or adjust the number of cycling colors with `--colors N`. By
+default the Sylvester algorithm leaves a small gap above each block. Use
+`--fill` to pack blocks flush against their supports or `--fill-with-seams` to
+allow seams in the packed version.

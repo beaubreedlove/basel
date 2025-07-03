@@ -20,7 +20,7 @@ precision.
 
 ```
 python -m tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM] [--open]
+    [--renderer {cycle,gradient}] [--colors NUM] [--fill] [--fill-with-seams]
 ```
 
 Arguments:
@@ -32,7 +32,8 @@ Arguments:
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--vector` – output an SVG vector image instead of PPM
-* `--open` – use open placement rules when supported (e.g. `sylvester`)
+* `--fill` – use the packed variant of the Sylvester algorithm
+* `--fill-with-seams` – allow seams in the packed variant
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
