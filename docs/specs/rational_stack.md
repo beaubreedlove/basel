@@ -33,5 +33,5 @@ square sizes on that path is `1/n, 1/(2n), 1/(4n), ...`, which sums to
 rationally located vertices.
 
 An implementation of this algorithm lives in
-`basel/algorithms/rational.py`.  See the module for a concise reference
+`algorithms/rational.py`.  See the module for a concise reference
 version and the README for rendering instructions.

@@ -3,27 +3,14 @@ from fractions import Fraction
 from typing import Tuple, List
 from decimal import Decimal, localcontext
 import importlib
-import sys
-from pathlib import Path
 
-# Ensure the project root is on ``sys.path`` so that imports work whether this
-# script is executed directly or via ``python -m`` from the parent directory.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+# ``python -m`` executed from the repository root already puts the project on
+# ``sys.path``.  Additional path manipulation is unnecessary and has been
+# removed so this script only works when run from the project root.
 
 def load_stack(algo: str, strict: bool, open_bounds: bool) -> "Stack":
-    """Import the requested stack implementation.
-
-    When executed from the repository root the package prefix ``basel`` is not
-    available.  Attempt a ``basel.algorithms`` import first and fall back to a
-    local ``algorithms`` import so the script works both from the project
-    directory and its parent.
-    """
-    try:
-        module = importlib.import_module(f"basel.algorithms.{algo}")
-    except ModuleNotFoundError:
-        module = importlib.import_module(f"algorithms.{algo}")
+    """Import the requested stack implementation."""
+    module = importlib.import_module(f"algorithms.{algo}")
     stack_class = getattr(module, "Stack")
     try:
         return stack_class(strict=strict, open_bounds=open_bounds)
@@ -159,7 +146,7 @@ def main() -> None:
     parser.add_argument(
         "--algo",
         default="rational",
-        help="stacking algorithm (module name in basel.algorithms)",
+        help="stacking algorithm (module name in algorithms)",
     )
     parser.add_argument(
         "--relaxed",

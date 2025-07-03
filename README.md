@@ -81,17 +81,17 @@ rational.  This result is still under investigation.
 Render 50 squares using the gradient coloring:
 
 ```
-python -m basel.tools.render_stack 50 --renderer gradient
+python -m tools.render_stack 50 --renderer gradient
 ```
 
 Render 20 squares cycling through 5 colors:
 
 ```
-python -m basel.tools.render_stack 20 --colors 5
+python -m tools.render_stack 20 --colors 5
 ```
 
 Generate a vector image instead of a PPM:
 
 ```
-python -m basel.tools.render_stack 20 --vector
+python -m tools.render_stack 20 --vector
 ```

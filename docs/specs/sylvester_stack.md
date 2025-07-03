@@ -56,13 +56,13 @@ which square each new square eventually sits on.
 * How do the strict and relaxed variants differ when a square lands on a
   ledge made up of multiple squares of the same height?
 
- A small Python module (`basel/algorithms/sylvester.py`) accompanies this document and
+ A small Python module (`algorithms/sylvester.py`) accompanies this document and
 computes the first few square positions for both variants.  The script uses
 Python's `Fraction` type so that every coordinate and interval length is
 represented exactly as a rational number.
 
-A companion script (`basel/tools/render_stack.py`) renders the first N squares as an
-image file. Run `python -m basel.tools.render_stack` to generate `stack.ppm` by
+A companion script (`tools/render_stack.py`) renders the first N squares as an
+image file. Run `python -m tools.render_stack` to generate `stack.ppm` by
 default. Refer to the project README for additional output options.
 The renderer automatically scales its output to display all squares, even when they
 extend above height 1. Squares can be colored using either a cycling palette or a
