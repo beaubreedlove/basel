@@ -24,24 +24,25 @@ statement. Each step adds an axis aligned square of side `1/n` for
    We consider two variants:
    
    - **Strict support** – both the bottom and left sides must touch a
-     single block or the ground/left boundary.
+     single square or the ground/left boundary.
    - **Relaxed support** – the bottom may rest on several squares as long
      as their top faces form a contiguous interval of equal height, and
      the left side may touch several squares whose right edges form a
      continuous vertical segment.
 
 The distinction between these variants arises quite early in the
-construction.  Immediately to the right of the 2‑block the stack contains
-a 4‑block topped by a 5‑block, which in turn supports the 20‑block.
+construction.  Immediately to the right of the 2‑square the stack contains
+a 4‑square topped by a 5‑square, which in turn supports the 20‑square.
 Both configurations reach exactly height `1/2`, leaving a plateau split
-down the seam between the 2‑ and 20‑blocks.  We must therefore decide
-whether a later block may balance across that seam—allowed in the
-relaxed version but forbidden in the strict one.  It is not yet known
-whether this is the only such occurrence or if the pattern repeats
-finitely or infinitely many times.  Likewise, it remains unclear
-whether a vertical seam can arise from a row of blocks resting on a
-block of equal length and, if so, whether that happens only finitely
-often or infinitely many times.
+down the seam between the 2‑ and 20‑squares.  In the relaxed version the
+21‑square can rest across that horizontal seam.  A vertical example occurs
+later when the 9‑ and 72‑squares sit atop the 8‑square, extending just as
+far to the right as the 8‑square itself, so the 80‑square rests on the
+32‑square and covers the seam.  These cases confirm that both horizontal
+and vertical seams appear at least once, though it remains unknown
+whether they recur infinitely many times.
+
+![Sylvester stack example](../images/sylvester.svg)
 
 The union of all placed squares forms a one unit tall shape of total area
 `\sum_{n=1}^\infty 1/n^2 = \pi^2/6`.
@@ -69,6 +70,40 @@ The renderer automatically scales its output to display all squares, even when
 they extend above height 1. Squares can be colored using either a cycling
 palette or a gradient from red to blue. Pass `--coloring gradient` for the
 gradient style or adjust the number of cycling colors with `--colors N`. By
-default the Sylvester algorithm leaves a small gap above each block. Use
-`--fill` to pack blocks flush against their supports or `--fill-with-seams` to
+default the Sylvester algorithm leaves a small gap above each square. Use
+`--fill` to pack squares flush against their supports or `--fill-with-seams` to
 allow seams in the packed version.
+
+When squares are packed without gaps, the right edge develops a boundary with
+infinitely many oscillations.  The boundary begins at $(S, 1)$ where
+
+$$S = 1 + \tfrac16 + \tfrac1{42} + \tfrac1{1806} + \cdots,$$
+
+and the denominators $1, 6, 42, 1806, \ldots$ are one less than each term of
+[Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence)
+$2, 3, 7, 43, 1807, \ldots$ except the 2nd term. Each denominator after $6$ is
+obtained by multiplying the previous one by the next integer (e.g.,
+$1807 = 42 * 43$). The resulting shape resembles a fractal with endlessly finer
+wiggles.
+
+The fact that 2 is missing from this sequence that otherwise matches Sylvester's
+sequence is that led me to include the rule that newly placed blocks must be
+strictly smaller than the gap they fill. Below are two variations without that
+requirement.
+
+### Filled Sylvester stack
+
+Notice the 6‑square sits on the 3‑square to completely fill the gap that the
+default algorithm leaves for the 7‑square and every later square in Sylvester's
+sequence.
+
+![Filled Sylvester stack](../images/sylvester_fill.svg)
+
+### Filled with seams
+
+Notice the 4+5+20 squares stack to the same height as the 2‑square, letting the
+21‑square rest on the seam they create.  Likewise the 9‑ and 72‑squares on top of
+the 8‑square extend as far right as the 8‑square, so the 80‑square can sit on the
+32‑square and cover the seam.
+
+![Filled with seams](../images/sylvester_fill_with_seams.svg)

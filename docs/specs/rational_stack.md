@@ -30,6 +30,8 @@ square sizes on that path is `1/n, 1/(2n), 1/(4n), ...`, which sums to
 `2/n`.  Consequently every jagged triangle on the boundary has
 rationally located vertices.
 
+![Rational stack example](../images/rational.svg)
+
 An implementation of this algorithm lives in
 `algorithms/rational.py`.  See the module for a concise reference
 version and the README for rendering instructions.

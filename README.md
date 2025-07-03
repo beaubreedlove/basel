@@ -32,7 +32,7 @@ Arguments:
 * `--coloring` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--binary` – output a PPM image instead of SVG
-* `--no-numbers` – omit block numbers on the squares
+* `--no-numbers` – omit square numbers on the squares
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
@@ -44,17 +44,18 @@ Consult the relevant specification for details.
 - [`rational`](docs/specs/rational_stack.md) – doubles squares when direction repeats
 
 The **Sylvester** algorithm was my starting point.  It drops each $n$‑square
-into a unit‑tall horizontal cavity using the simplest possible sliding rule.
-This process creates a boundary with infinitely many oscillations.  The boundary
-begins at $(S, 1)$ where
+into a unit‑tall horizontal cavity using the simplest possible sliding rule
+while never allowing a square to completely fill the remining space. As a result,
+the squares immediately to the right of the 1 follow [Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence),
+whose first few terms are $2, 3, 7, 43,$ and $1807$.
 
-$$S = 1 + \tfrac16 + \tfrac1{42} + \tfrac1{1806} + \cdots,$$
+The variant appears to trace a boundary stretching from $(1,1)$ to
+$(0,S)$, where $S$ may diverge to infinity though this has not been proven. The
+boundary wiggles like a snake with progressively smaller fractal-like
+sub-wiggles as tall or wide stacks of similar sized squares fill narrow gaps
+between similarly sized larger squares.
 
-and the denominators $1, 6, 42, 1806, \ldots$ are one less than each term of
-[Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence)
-$2, 3, 7, 43, 1807, \ldots$ except the 2nd term.  Each denominator after $6$ is obtained by
-multiplying the previous one by the next integer (e.g., $1807 = 42 * 43$). The resulting shape
-resembles a fractal with endlessly finer wiggles.
+![Sylvester stack example](docs/images/sylvester.svg)
 
 Seeking a configuration with clearer structure, I next tried the **Erdos**
 algorithm.  Rest the $1$‑square against the ground and a wall to create two
@@ -68,6 +69,8 @@ $1 + \tfrac13 + \tfrac17 + \tfrac1{15} + \tfrac1{2^n-1} + \cdots$.  This
 irrational value and related series appear throughout the boundary, making the
 geometry difficult to analyze.
 
+![Erdos stack example](docs/images/erdos.svg)
+
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
 placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
@@ -75,6 +78,8 @@ same direction, while the square $2n+1$ is positioned in the opposite
 direction.  Each round therefore expands every square into two children.  Infinite paths that
 repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
 rational.
+
+![Rational stack example](docs/images/rational.svg)
 
 ### Examples
 
@@ -90,7 +95,7 @@ Render 20 squares cycling through 5 colors:
 python -m tools.render_stack 20 --colors 5
 ```
 
-Render blocks without numbers:
+Render squares without numbers:
 
 ```
 python -m basel.tools.render_stack 10 --no-numbers
