@@ -20,7 +20,7 @@ precision.
 
 ```
 python -m tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM] [--open]
+    [--renderer {cycle,gradient}] [--colors NUM] [--open] [--numbers]
 ```
 
 Arguments:
@@ -33,6 +33,7 @@ Arguments:
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--vector` – output an SVG vector image instead of PPM
 * `--open` – use open placement rules when supported (e.g. `sylvester`)
+* `--numbers` – draw block numbers on the squares
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
@@ -88,6 +89,12 @@ Render 20 squares cycling through 5 colors:
 
 ```
 python -m basel.tools.render_stack 20 --colors 5
+```
+
+Render blocks labeled with their numbers:
+
+```
+python -m basel.tools.render_stack 10 --numbers
 ```
 
 Generate a vector image instead of a PPM:
