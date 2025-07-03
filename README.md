@@ -45,16 +45,11 @@ Consult the relevant specification for details.
 
 The **Sylvester** algorithm was my starting point.  It drops each $n$‑square
 into a unit‑tall horizontal cavity using the simplest possible sliding rule.
-This process creates a boundary with infinitely many oscillations.  The boundary
-begins at $(S, 1)$ where
-
-$$S = 1 + \tfrac16 + \tfrac1{42} + \tfrac1{1806} + \cdots,$$
-
-and the denominators $1, 6, 42, 1806, \ldots$ are one less than each term of
-[Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence)
-$2, 3, 7, 43, 1807, \ldots$ except the 2nd term.  Each denominator after $6$ is obtained by
-multiplying the previous one by the next integer (e.g., $1807 = 42 * 43$). The resulting shape
-resembles a fractal with endlessly finer wiggles.
+The packed variants appear to trace a boundary stretching from $(1,1)$ to
+$(0,S)$, where $S$ may diverge to infinity though this has not been proven.
+The squares immediately to the right of the 1 follow
+[Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence),
+whose first few terms are $2, 3, 7, 43,$ and $1807$.
 
 ![Sylvester stack example](docs/images/sylvester.svg)
 
