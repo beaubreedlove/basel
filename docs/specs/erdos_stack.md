@@ -22,6 +22,9 @@ produces a nested family of squares that can be rendered with the same
 visualization script.
 
 ![Erdos stack example](../images/erdos.svg)
+```
+python -m tools.render_stack 2047 --algo erdos --output erdos.svg
+```
 
 A reference implementation lives in `algorithms/erdos.py`.  Use
 `tools/render_stack.py` with `--algo erdos` to visualize the first N

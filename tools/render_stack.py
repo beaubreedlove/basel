@@ -291,9 +291,9 @@ def main() -> None:
         help="pack squares flush when using the sylvester algorithm",
     )
     parser.add_argument(
-        "--fill-with-seams",
+        "--fill-cover-seams",
         action="store_true",
-        help="allow seams in the packed sylvester variant",
+        help="cover seams in the packed sylvester variant",
     )
     parser.add_argument(
         "--coloring",
@@ -321,7 +321,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.algo == "sylvester":
-        if args.fill_with_seams:
+        if args.fill_cover_seams:
             stack = load_stack(
                 "sylvester_with_seams", strict=False, open_bounds=False
             )
