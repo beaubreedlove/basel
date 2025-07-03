@@ -20,8 +20,12 @@ precision.
 
 ```
 python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
-    [--renderer {cycle,gradient}] [--colors NUM]
+    [--renderer {cycle,gradient}] [--colors NUM] [--open]
 ```
+
+Run this command from the directory **above** the project so Python can import
+the ``basel`` package.  Alternatively execute ``python tools/render_stack.py``
+from inside the repository.
 
 Arguments:
 
@@ -32,6 +36,7 @@ Arguments:
 * `--renderer` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--vector` – output an SVG vector image instead of PPM
+* `--open` – use open placement rules when supported (e.g. `sylvester`)
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.

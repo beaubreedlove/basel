@@ -61,9 +61,10 @@ computes the first few square positions for both variants.  The script uses
 Python's `Fraction` type so that every coordinate and interval length is
 represented exactly as a rational number.
 
-A companion script (`basel/tools/render_stack.py`) renders the first N squares as an
-image file. Run `python -m basel.tools.render_stack` to generate `stack.ppm` by
-default. Refer to the project README for additional output options.
+A companion script (`tools/render_stack.py`) renders the first N squares as an
+image file. Run `python -m basel.tools.render_stack` from the directory above the
+project or `python tools/render_stack.py` from inside the repository to generate
+`stack.ppm` by default. Refer to the project README for additional output options.
 The renderer automatically scales its output to display all squares, even when they
 extend above height 1. Squares can be colored using either a cycling palette or a
 gradient from red to blue. Pass `--renderer gradient` for the gradient style or

@@ -23,4 +23,6 @@ visualization script.
 
 A reference implementation lives in `basel/algorithms/erdos.py`.  Use
 `basel/tools/render_stack.py` with `--algo erdos` to visualize the first N
-squares.  The renderer scales automatically to include all squares.
+squares when running from the directory above the project, or run
+`python tools/render_stack.py --algo erdos` from within the repository.  The
+renderer scales automatically to include all squares.
