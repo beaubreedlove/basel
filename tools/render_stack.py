@@ -71,7 +71,7 @@ def _cycle_color(index: int, count: int) -> Tuple[int, int, int]:
 
 
 def _text_color(color: Tuple[int, int, int]) -> Tuple[int, int, int]:
-    """Return black or white text color depending on block brightness."""
+    """Return black or white text color depending on square brightness."""
     brightness = 0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2]
     return (0, 0, 0) if brightness > 128 else (255, 255, 255)
 
@@ -198,30 +198,30 @@ def render_ppm(
     numbers: bool = False,
 ) -> None:
     """Render the stack to a simple PPM image file."""
-    xmax = max(b.x + b.side for b in stack.blocks)
-    ymax = max(b.y + b.side for b in stack.blocks)
+    xmax = max(b.x + b.side for b in stack.squares)
+    ymax = max(b.y + b.side for b in stack.squares)
     width = int(scale * xmax) + 1
     height = int(scale * ymax) + 1
     # initialize black background
     pixels: List[List[Tuple[int, int, int]]] = [
         [(0, 0, 0) for _ in range(width)] for _ in range(height)
     ]
-    total_blocks = len(stack.blocks)
+    total_squares = len(stack.squares)
     color_count = max(1, min(colors, len(COLOR_PALETTE)))
-    for block in stack.blocks:
+    for square in stack.squares:
         if renderer == "gradient":
-            color = _gradient_color(block.n, total_blocks)
+            color = _gradient_color(square.n, total_squares)
         else:
-            color = _cycle_color(block.n, color_count)
-        x0 = int(scale * block.x)
-        x1 = int(scale * (block.x + block.side))
-        y0 = int(scale * (ymax - (block.y + block.side)))
-        y1 = int(scale * (ymax - block.y))
+            color = _cycle_color(square.n, color_count)
+        x0 = int(scale * square.x)
+        x1 = int(scale * (square.x + square.side))
+        y0 = int(scale * (ymax - (square.y + square.side)))
+        y1 = int(scale * (ymax - square.y))
         for y in range(max(y0, 0), min(y1, height)):
             for x in range(max(x0, 0), min(x1, width)):
                 pixels[y][x] = color
         if numbers:
-            _draw_number(pixels, str(block.n), x0, y0, x1, y1, _text_color(color))
+            _draw_number(pixels, str(square.n), x0, y0, x1, y1, _text_color(color))
     with open(filename, "w") as fh:
         fh.write(f"P3\n{width} {height}\n255\n")
         for row in pixels:
@@ -237,38 +237,38 @@ def render_svg(
     numbers: bool = False,
 ) -> None:
     """Render the stack to a simple SVG vector image."""
-    xmax = max(b.x + b.side for b in stack.blocks)
-    ymax = max(b.y + b.side for b in stack.blocks)
-    total_blocks = len(stack.blocks)
+    xmax = max(b.x + b.side for b in stack.squares)
+    ymax = max(b.y + b.side for b in stack.squares)
+    total_squares = len(stack.squares)
     color_count = max(1, min(colors, len(COLOR_PALETTE)))
     with open(filename, "w") as fh:
         fh.write(
             f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {_fmt(xmax)} {_fmt(ymax)}">\n'
         )
         fh.write('<rect width="100%" height="100%" fill="black" />\n')
-        for block in stack.blocks:
+        for square in stack.squares:
             if renderer == "gradient":
-                color = _gradient_color(block.n, total_blocks)
+                color = _gradient_color(square.n, total_squares)
             else:
-                color = _cycle_color(block.n, color_count)
+                color = _cycle_color(square.n, color_count)
             fh.write(
-                f'<rect x="{_fmt(block.x)}" y="{_fmt(ymax - (block.y + block.side))}" '
-                f'width="{_fmt(block.side)}" height="{_fmt(block.side)}" '
+                f'<rect x="{_fmt(square.x)}" y="{_fmt(ymax - (square.y + square.side))}" '
+                f'width="{_fmt(square.side)}" height="{_fmt(square.side)}" '
                 f'fill="rgb({color[0]},{color[1]},{color[2]})" />\n'
             )
             if numbers:
                 text_color = _text_color(color)
-                digits = len(str(block.n))
-                max_size = block.side * Fraction(8, 10)
-                width_based = block.side * Fraction(8, 10) / (Fraction(6, 10) * digits)
+                digits = len(str(square.n))
+                max_size = square.side * Fraction(8, 10)
+                width_based = square.side * Fraction(8, 10) / (Fraction(6, 10) * digits)
                 font_size = min(max_size, width_based)
                 fh.write(
-                    f'<text x="{_fmt(block.x + block.side / 2)}" '
-                    f'y="{_fmt(ymax - (block.y + block.side / 2))}" '
+                    f'<text x="{_fmt(square.x + square.side / 2)}" '
+                    f'y="{_fmt(ymax - (square.y + square.side / 2))}" '
                     f'font-size="{_fmt(font_size)}" '
                     f'text-anchor="middle" dominant-baseline="central" '
                     f'fill="rgb({text_color[0]},{text_color[1]},{text_color[2]})">'
-                    f'{block.n}</text>\n'
+                    f'{square.n}</text>\n'
                 )
         fh.write("</svg>\n")
 
@@ -276,9 +276,9 @@ def render_svg(
 def main() -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(description="Render block stacks")
+    parser = argparse.ArgumentParser(description="Render square stacks")
     parser.add_argument(
-        "N", type=int, nargs="?", default=100, help="number of blocks to render"
+        "N", type=int, nargs="?", default=100, help="number of squares to render"
     )
     parser.add_argument(
         "--algo",
@@ -288,7 +288,7 @@ def main() -> None:
     parser.add_argument(
         "--fill",
         action="store_true",
-        help="pack blocks flush when using the sylvester algorithm",
+        help="pack squares flush when using the sylvester algorithm",
     )
     parser.add_argument(
         "--fill-with-seams",
@@ -310,7 +310,7 @@ def main() -> None:
     parser.add_argument(
         "--no-numbers",
         action="store_true",
-        help="omit block numbers on the squares",
+        help="omit square numbers on the squares",
     )
     parser.add_argument(
         "--binary",

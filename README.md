@@ -32,7 +32,7 @@ Arguments:
 * `--coloring` – coloring method: `cycle` or `gradient` (default: `cycle`)
 * `--colors` – number of colors for the cycle renderer (default: `2`)
 * `--binary` – output a PPM image instead of SVG
-* `--no-numbers` – omit block numbers on the squares
+* `--no-numbers` – omit square numbers on the squares
 
 Some algorithms accept extra flags that extend or modify their behavior.
 Consult the relevant specification for details.
@@ -96,7 +96,7 @@ Render 20 squares cycling through 5 colors:
 python -m tools.render_stack 20 --colors 5
 ```
 
-Render blocks without numbers:
+Render squares without numbers:
 
 ```
 python -m basel.tools.render_stack 10 --no-numbers

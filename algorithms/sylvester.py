@@ -4,7 +4,7 @@ from fractions import Fraction
 from typing import List, Optional
 
 @dataclass
-class Block:
+class Square:
     n: int
     side: Fraction
     x: Fraction
@@ -21,7 +21,7 @@ class Corner:
 
 class Stack:
     """Corner-based Sylvester stack.  ``open_bounds=True`` leaves a small gap
-    above each block.  ``open_bounds=False`` packs blocks flush against their
+    above each square.  ``open_bounds=False`` packs squares flush against their
     supports."""
 
     def __init__(self, strict: bool = True, open_bounds: bool = True) -> None:
@@ -29,7 +29,7 @@ class Stack:
             raise NotImplementedError("Relaxed support not implemented")
         self.strict = True
         self.open_bounds = open_bounds
-        self.blocks: List[Block] = [Block(1, Fraction(1), Fraction(0), Fraction(0))]
+        self.squares: List[Square] = [Square(1, Fraction(1), Fraction(0), Fraction(0))]
         self.segments: List[tuple[Fraction, Fraction, Fraction]] = [
             (Fraction(0), Fraction(1), Fraction(1))
         ]
@@ -60,7 +60,7 @@ class Stack:
         new_segments.append((left, right, height))
         self.segments = new_segments
 
-    def add_block(self, n: int) -> None:
+    def add_square(self, n: int) -> None:
         side = Fraction(1, n)
         for i, c in enumerate(self.corners):
             if c.hspan is not None and side > c.hspan:
@@ -80,7 +80,7 @@ class Stack:
             raise RuntimeError("no position found")
         x = c.x
         bottom = c.bottom
-        self.blocks.append(Block(n, side, x, bottom))
+        self.squares.append(Square(n, side, x, bottom))
         self._insert_segment(x, x + side, bottom + side)
         self._merge()
         self.corners.pop(i)
@@ -117,11 +117,11 @@ class Stack:
 
     def build(self, count: int) -> None:
         for n in range(2, count + 1):
-            self.add_block(n)
+            self.add_square(n)
 
     def summary(self) -> str:
         lines = []
-        for b in self.blocks:
+        for b in self.squares:
             lines.append(f"n={b.n}: left={b.x} bottom={b.y} side={b.side}")
         return "\n".join(lines)
 
@@ -129,13 +129,13 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Simulate Sylvester block stacking (corner version)"
+        description="Simulate Sylvester square stacking (corner version)"
     )
-    parser.add_argument("N", type=int, nargs="?", default=10, help="number of blocks to simulate")
+    parser.add_argument("N", type=int, nargs="?", default=10, help="number of squares to simulate")
     parser.add_argument(
         "--fill",
         action="store_true",
-        help="pack blocks flush against their supports",
+        help="pack squares flush against their supports",
     )
     args = parser.parse_args()
 

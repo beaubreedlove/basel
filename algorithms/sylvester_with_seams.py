@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import List, Tuple
 
 @dataclass
-class Block:
+class Square:
     n: int
     side: Fraction
     x: Fraction
@@ -14,7 +14,7 @@ class Stack:
     def __init__(self, strict: bool = True, open_bounds: bool = False):
         self.strict = strict
         self.open_bounds = open_bounds
-        self.blocks: List[Block] = [Block(1, Fraction(1), Fraction(0), Fraction(0))]
+        self.squares: List[Square] = [Square(1, Fraction(1), Fraction(0), Fraction(0))]
         self.segments: List[Tuple[Fraction, Fraction, Fraction]] = [
             (Fraction(0), Fraction(1), Fraction(1))
         ]
@@ -99,7 +99,7 @@ class Stack:
         intervals: List[Tuple[Fraction, Fraction]] = []
         if x == 0:
             intervals.append((Fraction(0), Fraction(1)))
-        for b in self.blocks:
+        for b in self.squares:
             if b.x + b.side == x:
                 intervals.append((b.y, b.y + b.side))
         intervals.sort()
@@ -149,7 +149,7 @@ class Stack:
         new_segments.append((left, right, height))
         self.segments = new_segments
 
-    def add_block(self, n: int):
+    def add_square(self, n: int):
         side = Fraction(1, n)
         x = Fraction(0)
         bottom = Fraction(1)
@@ -172,18 +172,18 @@ class Stack:
                 bottom = support
                 break
             x = next_x
-        self.blocks.append(Block(n, side, x, bottom))
+        self.squares.append(Square(n, side, x, bottom))
         # insert new segment and remove covered pieces of older segments
         self._insert_segment(x, x + side, bottom + side)
         self._merge()
 
     def build(self, count: int):
         for n in range(2, count + 1):
-            self.add_block(n)
+            self.add_square(n)
 
     def summary(self) -> str:
         lines = []
-        for b in self.blocks:
+        for b in self.squares:
             lines.append(
                 f"n={b.n}: left={b.x} bottom={b.y} side={b.side}"
             )
@@ -192,8 +192,8 @@ class Stack:
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Simulate Sylvester block stacking (with seams)")
-    parser.add_argument("N", type=int, nargs="?", default=10, help="number of blocks to simulate")
+    parser = argparse.ArgumentParser(description="Simulate Sylvester square stacking (with seams)")
+    parser.add_argument("N", type=int, nargs="?", default=10, help="number of squares to simulate")
     parser.add_argument("--fill-with-seams", action="store_true", help="dummy flag for compatibility")
     args = parser.parse_args()
 
