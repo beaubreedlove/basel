@@ -44,12 +44,16 @@ Consult the relevant specification for details.
 - [`rational`](docs/specs/rational_stack.md) – doubles squares when direction repeats
 
 The **Sylvester** algorithm was my starting point.  It drops each $n$‑square
-into a unit‑tall horizontal cavity using the simplest possible sliding rule.
-The packed variants appear to trace a boundary stretching from $(1,1)$ to
-$(0,S)$, where $S$ may diverge to infinity though this has not been proven.
-The squares immediately to the right of the 1 follow
-[Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence),
+into a unit‑tall horizontal cavity using the simplest possible sliding rule
+while never allowing a square to completely fill the remining space. As a result,
+the squares immediately to the right of the 1 follow [Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence),
 whose first few terms are $2, 3, 7, 43,$ and $1807$.
+
+The variant appears to trace a boundary stretching from $(1,1)$ to
+$(0,S)$, where $S$ may diverge to infinity though this has not been proven. The
+boundary wiggles like a snake with progressively smaller fractal-like
+sub-wiggles as tall or wide stacks of similar sized squares fill narrow gaps
+between similarly sized larger squares.
 
 ![Sylvester stack example](docs/images/sylvester.svg)
 
