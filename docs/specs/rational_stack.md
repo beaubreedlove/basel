@@ -31,6 +31,9 @@ square sizes on that path is `1/n, 1/(2n), 1/(4n), ...`, which sums to
 rationally located vertices.
 
 ![Rational stack example](../images/rational.svg)
+```
+python -m tools.render_stack 2047 --algo rational --output rational.svg
+```
 
 An implementation of this algorithm lives in
 `algorithms/rational.py`.  See the module for a concise reference

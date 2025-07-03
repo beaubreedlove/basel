@@ -56,6 +56,9 @@ sub-wiggles as tall or wide stacks of similar sized squares fill narrow gaps
 between similarly sized larger squares.
 
 ![Sylvester stack example](docs/images/sylvester.svg)
+```
+python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg --colors 12
+```
 
 Seeking a configuration with clearer structure, I next tried the **Erdos**
 algorithm.  Rest the $1$‑square against the ground and a wall to create two
@@ -70,6 +73,9 @@ irrational value and related series appear throughout the boundary, making the
 geometry difficult to analyze.
 
 ![Erdos stack example](docs/images/erdos.svg)
+```
+python -m tools.render_stack 2047 --algo erdos --output erdos.svg
+```
 
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
@@ -80,6 +86,9 @@ repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + 
 rational.
 
 ![Rational stack example](docs/images/rational.svg)
+```
+python -m tools.render_stack 2047 --algo rational --output rational.svg
+```
 
 ### Examples
 

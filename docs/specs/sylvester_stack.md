@@ -43,6 +43,9 @@ and vertical seams appear at least once, though it remains unknown
 whether they recur infinitely many times.
 
 ![Sylvester stack example](../images/sylvester.svg)
+```
+python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg --colors 12
+```
 
 The union of all placed squares forms a one unit tall shape of total area
 `\sum_{n=1}^\infty 1/n^2 = \pi^2/6`.
@@ -71,8 +74,8 @@ they extend above height 1. Squares can be colored using either a cycling
 palette or a gradient from red to blue. Pass `--coloring gradient` for the
 gradient style or adjust the number of cycling colors with `--colors N`. By
 default the Sylvester algorithm leaves a small gap above each square. Use
-`--fill` to pack squares flush against their supports or `--fill-with-seams` to
-allow seams in the packed version.
+`--fill` to pack squares flush against their supports or `--fill-cover-seams` to
+cover seams in the packed version.
 
 When squares are packed without gaps, the right edge develops a boundary with
 infinitely many oscillations.  The boundary begins at $(S, 1)$ where
@@ -98,12 +101,20 @@ default algorithm leaves for the 7‑square and every later square in Sylvester'
 sequence.
 
 ![Filled Sylvester stack](../images/sylvester_fill.svg)
+```
+python -m tools.render_stack 2047 --algo sylvester --fill --output sylvester_fill.svg --colors 12
+```
 
-### Filled with seams
+### Covering seams
 
 Notice the 4+5+20 squares stack to the same height as the 2‑square, letting the
 21‑square rest on the seam they create.  Likewise the 9‑ and 72‑squares on top of
 the 8‑square extend as far right as the 8‑square, so the 80‑square can sit on the
 32‑square and cover the seam.
 
-![Filled with seams](../images/sylvester_fill_with_seams.svg)
+![Covering seams](../images/sylvester_fill_cover_seams.svg)
+```
+python -m tools.render_stack 100 --algo sylvester --fill-cover-seams --output sylvester_fill_cover_seams.svg --colors 12
+```
+
+Note that I rendered less squares with this algorithm because it runs slow. I believe it's $O(n^2 \log n)$.

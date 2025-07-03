@@ -192,9 +192,9 @@ class Stack:
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Simulate Sylvester square stacking (with seams)")
+    parser = argparse.ArgumentParser(description="Simulate Sylvester square stacking (cover seams)")
     parser.add_argument("N", type=int, nargs="?", default=10, help="number of squares to simulate")
-    parser.add_argument("--fill-with-seams", action="store_true", help="dummy flag for compatibility")
+    parser.add_argument("--fill-cover-seams", action="store_true", help="dummy flag for compatibility")
     args = parser.parse_args()
 
     stack = Stack(strict=False, open_bounds=False)
