@@ -75,7 +75,7 @@ placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
 same direction, while the square $2n+1$ is positioned in the opposite
 direction.  Each round therefore expands every square into two children.  Infinite paths that
 repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
-rational.  This result is still under investigation.
+rational.
 
 ### Examples
 
