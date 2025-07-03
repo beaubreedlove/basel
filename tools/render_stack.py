@@ -296,7 +296,7 @@ def main() -> None:
         help="allow seams in the packed sylvester variant",
     )
     parser.add_argument(
-        "--renderer",
+        "--coloring",
         choices=["cycle", "gradient"],
         default="cycle",
         help="coloring method",
@@ -308,14 +308,14 @@ def main() -> None:
         help="number of colors to cycle through (for cycle renderer)",
     )
     parser.add_argument(
-        "--numbers",
+        "--no-numbers",
         action="store_true",
-        help="draw block numbers on the squares",
+        help="omit block numbers on the squares",
     )
     parser.add_argument(
-        "--vector",
+        "--binary",
         action="store_true",
-        help="write an SVG vector image instead of a PPM file",
+        help="write a PPM bitmap image instead of an SVG file",
     )
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
@@ -333,22 +333,22 @@ def main() -> None:
         stack = load_stack(args.algo, strict=True, open_bounds=False)
     stack.build(args.N)
     if args.output is None:
-        args.output = "stack.svg" if args.vector else "stack.ppm"
-    if args.vector:
-        render_svg(
-            stack,
-            filename=args.output,
-            renderer=args.renderer,
-            colors=args.colors,
-            numbers=args.numbers,
-        )
-    else:
+        args.output = "stack.ppm" if args.binary else "stack.svg"
+    if args.binary:
         render_ppm(
             stack,
             filename=args.output,
-            renderer=args.renderer,
+            renderer=args.coloring,
             colors=args.colors,
-            numbers=args.numbers,
+            numbers=not args.no_numbers,
+        )
+    else:
+        render_svg(
+            stack,
+            filename=args.output,
+            renderer=args.coloring,
+            colors=args.colors,
+            numbers=not args.no_numbers,
         )
 
 
