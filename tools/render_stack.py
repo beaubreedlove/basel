@@ -3,14 +3,35 @@ from fractions import Fraction
 from typing import Tuple, List
 from decimal import Decimal, localcontext
 import importlib
+import sys
+from pathlib import Path
 
-def load_stack(algo: str, strict: bool) -> "Stack":
-    module = importlib.import_module(f"basel.algorithms.{algo}")
+# Ensure the project root is on ``sys.path`` so that imports work whether this
+# script is executed directly or via ``python -m`` from the parent directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+def load_stack(algo: str, strict: bool, open_bounds: bool) -> "Stack":
+    """Import the requested stack implementation.
+
+    When executed from the repository root the package prefix ``basel`` is not
+    available.  Attempt a ``basel.algorithms`` import first and fall back to a
+    local ``algorithms`` import so the script works both from the project
+    directory and its parent.
+    """
+    try:
+        module = importlib.import_module(f"basel.algorithms.{algo}")
+    except ModuleNotFoundError:
+        module = importlib.import_module(f"algorithms.{algo}")
     stack_class = getattr(module, "Stack")
     try:
-        return stack_class(strict=strict)
+        return stack_class(strict=strict, open_bounds=open_bounds)
     except TypeError:
-        return stack_class()
+        try:
+            return stack_class(strict=strict)
+        except TypeError:
+            return stack_class()
 
 
 COLOR_PALETTE = [
@@ -158,6 +179,11 @@ def main() -> None:
         help="number of colors to cycle through (for cycle renderer)",
     )
     parser.add_argument(
+        "--open",
+        action="store_true",
+        help="use open placement rules when supported",
+    )
+    parser.add_argument(
         "--vector",
         action="store_true",
         help="write an SVG vector image instead of a PPM file",
@@ -165,7 +191,7 @@ def main() -> None:
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
 
-    stack = load_stack(args.algo, strict=not args.relaxed)
+    stack = load_stack(args.algo, strict=not args.relaxed, open_bounds=args.open)
     stack.build(args.N)
     if args.output is None:
         args.output = "stack.svg" if args.vector else "stack.ppm"
