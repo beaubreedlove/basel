@@ -3,27 +3,14 @@ from fractions import Fraction
 from typing import Tuple, List
 from decimal import Decimal, localcontext
 import importlib
-import sys
-from pathlib import Path
 
-# Ensure the project root is on ``sys.path`` so that imports work whether this
-# script is executed directly or via ``python -m`` from the parent directory.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+# ``python -m`` executed from the repository root already puts the project on
+# ``sys.path``.  Additional path manipulation is unnecessary and has been
+# removed so this script only works when run from the project root.
 
 def load_stack(algo: str, strict: bool, open_bounds: bool) -> "Stack":
-    """Import the requested stack implementation.
-
-    When executed from the repository root the package prefix ``basel`` is not
-    available.  Attempt a ``basel.algorithms`` import first and fall back to a
-    local ``algorithms`` import so the script works both from the project
-    directory and its parent.
-    """
-    try:
-        module = importlib.import_module(f"basel.algorithms.{algo}")
-    except ModuleNotFoundError:
-        module = importlib.import_module(f"algorithms.{algo}")
+    """Import the requested stack implementation."""
+    module = importlib.import_module(f"algorithms.{algo}")
     stack_class = getattr(module, "Stack")
     try:
         return stack_class(strict=strict, open_bounds=open_bounds)
@@ -296,12 +283,17 @@ def main() -> None:
     parser.add_argument(
         "--algo",
         default="rational",
-        help="stacking algorithm (module name in basel.algorithms)",
+        help="stacking algorithm (module name in algorithms)",
     )
     parser.add_argument(
-        "--relaxed",
+        "--fill",
         action="store_true",
-        help="use relaxed rules where supported",
+        help="pack blocks flush when using the sylvester algorithm",
+    )
+    parser.add_argument(
+        "--fill-with-seams",
+        action="store_true",
+        help="allow seams in the packed sylvester variant",
     )
     parser.add_argument(
         "--renderer",
@@ -316,11 +308,6 @@ def main() -> None:
         help="number of colors to cycle through (for cycle renderer)",
     )
     parser.add_argument(
-        "--open",
-        action="store_true",
-        help="use open placement rules when supported",
-    )
-    parser.add_argument(
         "--numbers",
         action="store_true",
         help="draw block numbers on the squares",
@@ -333,7 +320,17 @@ def main() -> None:
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
 
-    stack = load_stack(args.algo, strict=not args.relaxed, open_bounds=args.open)
+    if args.algo == "sylvester":
+        if args.fill_with_seams:
+            stack = load_stack(
+                "sylvester_with_seams", strict=False, open_bounds=False
+            )
+        else:
+            stack = load_stack(
+                "sylvester", strict=True, open_bounds=not args.fill
+            )
+    else:
+        stack = load_stack(args.algo, strict=True, open_bounds=False)
     stack.build(args.N)
     if args.output is None:
         args.output = "stack.svg" if args.vector else "stack.ppm"
