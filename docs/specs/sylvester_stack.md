@@ -97,11 +97,10 @@ and the denominators $1, 6, 42, 1806, \ldots$ are one less than each term of
 [Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence)
 $2, 3, 7, 43, 1807, \ldots$ except the 2nd term. Each denominator after $6$ is
 obtained by multiplying the previous one by the next integer (e.g.,
-$1807 = 42 * 43$). The resulting shape resembles a fractal with endlessly finer
-wiggles.
+$1807 = 42 * 43$).
 
 The fact that 2 is missing from this sequence that otherwise matches Sylvester's
-sequence is that led me to include the rule that newly placed blocks must be
+sequence is what led me to include the rule that newly placed blocks must be
 strictly smaller than the gap they fill. Below are two variations without that
 requirement.
 
