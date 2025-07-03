@@ -10,11 +10,15 @@ class Block:
     x: Fraction
     y: Fraction  # bottom coordinate
 
-class Stack:
-    def __init__(self, strict: bool = True, open_bounds: bool = False):
+class SegmentStack:
+    """Original segment based implementation used for the relaxed variant."""
+
+    def __init__(self, strict: bool = True, open_bounds: bool = False) -> None:
         self.strict = strict
         self.open_bounds = open_bounds
-        self.blocks: List[Block] = [Block(1, Fraction(1), Fraction(0), Fraction(0))]
+        self.blocks: List[Block] = [
+            Block(1, Fraction(1), Fraction(0), Fraction(0))
+        ]
         self.segments: List[Tuple[Fraction, Fraction, Fraction]] = [
             (Fraction(0), Fraction(1), Fraction(1))
         ]
@@ -188,6 +192,55 @@ class Stack:
                 f"n={b.n}: left={b.x} bottom={b.y} side={b.side}"
             )
         return "\n".join(lines)
+
+
+class CornerStack(SegmentStack):
+    """Corner based implementation used for strict and open placement."""
+
+    def __init__(self, strict: bool = True, open_bounds: bool = False) -> None:
+        super().__init__(strict=strict, open_bounds=open_bounds)
+        # list of x positions representing empty corners in order from left to right
+        self.corners: List[Fraction] = [Fraction(1)]
+
+    def _add_corner(self, x: Fraction) -> None:
+        if x not in self.corners:
+            self.corners.append(x)
+            self.corners.sort()
+
+    def add_block(self, n: int) -> None:
+        side = Fraction(1, n)
+        for i, x in enumerate(self.corners):
+            bottom = self._support_height(x, side)
+            top = bottom + side
+            if (top > 1) or (self.open_bounds and top == 1):
+                continue
+            if self._is_supported(x, side, bottom) and self._is_left_supported(x, side, bottom):
+                break
+        else:
+            # if no corner worked, fall back to scanning from the last corner
+            x = self.corners[-1]
+            bottom = self._support_height(x, side)
+            i = len(self.corners) - 1
+
+        self.blocks.append(Block(n, side, x, bottom))
+        self._insert_segment(x, x + side, bottom + side)
+        self._merge()
+        self.corners.pop(i)
+        self._add_corner(x)
+        self._add_corner(x + side)
+
+
+class Stack:
+    """Wrapper that selects the implementation based on the ``strict`` flag."""
+
+    def __init__(self, strict: bool = True, open_bounds: bool = False) -> None:
+        if strict:
+            self.impl = CornerStack(strict=True, open_bounds=open_bounds)
+        else:
+            self.impl = SegmentStack(strict=False, open_bounds=open_bounds)
+
+    def __getattr__(self, name):
+        return getattr(self.impl, name)
 
 if __name__ == "__main__":
     import argparse
