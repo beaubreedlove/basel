@@ -34,14 +34,13 @@ The distinction between these variants arises quite early in the
 construction.  Immediately to the right of the 2‑block the stack contains
 a 4‑block topped by a 5‑block, which in turn supports the 20‑block.
 Both configurations reach exactly height `1/2`, leaving a plateau split
-down the seam between the 2‑ and 20‑blocks.  We must therefore decide
-whether a later block may balance across that seam—allowed in the
-relaxed version but forbidden in the strict one.  It is not yet known
-whether this is the only such occurrence or if the pattern repeats
-finitely or infinitely many times.  Likewise, it remains unclear
-whether a vertical seam can arise from a row of blocks resting on a
-block of equal length and, if so, whether that happens only finitely
-often or infinitely many times.
+down the seam between the 2‑ and 20‑blocks.  In the relaxed version the
+21‑block can rest across that horizontal seam.  A vertical example occurs
+later when the 9‑ and 72‑blocks sit atop the 8‑block, extending just as
+far to the right as the 8‑block itself, so the 80‑block rests on the
+32‑block and covers the seam.  These cases confirm that both horizontal
+and vertical seams appear at least once, though it remains unknown
+whether they recur infinitely many times.
 
 ![Sylvester stack example](../images/sylvester.svg)
 
@@ -75,6 +74,19 @@ default the Sylvester algorithm leaves a small gap above each block. Use
 `--fill` to pack blocks flush against their supports or `--fill-with-seams` to
 allow seams in the packed version.
 
+### Filled Sylvester stack
+
+Notice the 6‑block sits on the 3‑block to completely fill the gap that the
+default algorithm leaves for the 7‑block and every later block in Sylvester's
+sequence.
+
 ![Filled Sylvester stack](../images/sylvester_fill.svg)
+
+### Filled with seams
+
+Notice the 4+5+20 blocks stack to the same height as the 2‑block, letting the
+21‑block rest on the seam they create.  Likewise the 9‑ and 72‑blocks on top of
+the 8‑block extend as far right as the 8‑block, so the 80‑block can sit on the
+32‑block and cover the seam.
 
 ![Filled with seams](../images/sylvester_fill_with_seams.svg)
