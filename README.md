@@ -57,7 +57,7 @@ between similarly sized larger squares.
 
 ![Sylvester stack example](docs/images/sylvester.svg)
 ```
-python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg
+python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg --colors 12
 ```
 
 Seeking a configuration with clearer structure, I next tried the **Erdos**
