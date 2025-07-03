@@ -19,13 +19,9 @@ the output so all squares remain visible.  Pass `--vector` to generate an SVG in
 precision.
 
 ```
-python -m basel.tools.render_stack [N] --algo NAME [--output FILE] \
+python -m tools.render_stack [N] --algo NAME [--output FILE] \
     [--renderer {cycle,gradient}] [--colors NUM] [--open]
 ```
-
-Run this command from the project root using ``python tools/render_stack.py``.
-The ``python -m basel.tools.render_stack`` form also works when the project
-directory is on ``PYTHONPATH``.
 
 Arguments:
 

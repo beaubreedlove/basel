@@ -21,8 +21,6 @@ is unrelated to the physical falling and sliding rules of the Sylvester stack bu
 produces a nested family of squares that can be rendered with the same
 visualization script.
 
-A reference implementation lives in `basel/algorithms/erdos.py`.  Run
-``python tools/render_stack.py --algo erdos`` from the project root to
-visualize the first N squares.  The renderer scales automatically to include
-all squares.  The ``python -m basel.tools.render_stack`` form works as well
-when the project directory is on ``PYTHONPATH``.
+A reference implementation lives in `basel/algorithms/erdos.py`.  Use
+`basel/tools/render_stack.py` with `--algo erdos` to visualize the first N
+squares.  The renderer scales automatically to include all squares.
