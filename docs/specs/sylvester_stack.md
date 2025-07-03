@@ -44,7 +44,7 @@ whether they recur infinitely many times.
 
 ![Sylvester stack example](../images/sylvester.svg)
 ```
-python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg
+python -m tools.render_stack 2047 --algo sylvester --output sylvester.svg --colors 12
 ```
 
 The union of all placed squares forms a one unit tall shape of total area
@@ -102,7 +102,7 @@ sequence.
 
 ![Filled Sylvester stack](../images/sylvester_fill.svg)
 ```
-python -m tools.render_stack 2047 --algo sylvester --fill --output sylvester_fill.svg
+python -m tools.render_stack 2047 --algo sylvester --fill --output sylvester_fill.svg --colors 12
 ```
 
 ### Covering seams
@@ -114,5 +114,7 @@ the 8‑square extend as far right as the 8‑square, so the 80‑square can sit
 
 ![Covering seams](../images/sylvester_fill_cover_seams.svg)
 ```
-python -m tools.render_stack 2047 --algo sylvester --fill-cover-seams --output sylvester_fill_cover_seams.svg
+python -m tools.render_stack 100 --algo sylvester --fill-cover-seams --output sylvester_fill_cover_seams.svg --colors 12
 ```
+
+Note that I rendered less squares with this algorithm because it runs slow. I believe it's $O(n^2 \log n)$.
