@@ -11,8 +11,9 @@ class Block:
     y: Fraction  # bottom coordinate
 
 class Stack:
-    def __init__(self, strict: bool = True):
+    def __init__(self, strict: bool = True, open_bounds: bool = False):
         self.strict = strict
+        self.open_bounds = open_bounds
         self.blocks: List[Block] = [Block(1, Fraction(1), Fraction(0), Fraction(0))]
         self.segments: List[Tuple[Fraction, Fraction, Fraction]] = [
             (Fraction(0), Fraction(1), Fraction(1))
@@ -67,8 +68,12 @@ class Stack:
             if h != bottom:
                 return False
             coverage = r
-        if coverage < end:
-            return False
+        if self.open_bounds and bottom != Fraction(0):
+            if coverage <= end:
+                return False
+        else:
+            if coverage < end:
+                return False
         if self.strict:
             return len(segs) == 1
         return True
@@ -92,8 +97,12 @@ class Stack:
             coverage = min(target_top, r)
             if coverage >= target_top:
                 break
-        if coverage < target_top:
-            return False
+        if self.open_bounds and x != Fraction(0):
+            if coverage <= target_top:
+                return False
+        else:
+            if coverage < target_top:
+                return False
         if self.strict:
             count = 0
             for l, r in intervals:
@@ -131,7 +140,7 @@ class Stack:
             if bottom > support:
                 bottom = support
             top = bottom + side
-            if top > 1:
+            if (top > 1) or (self.open_bounds and top == 1):
                 next_x = self._next_boundary(x)
                 if next_x == x:
                     bottom = support
@@ -168,8 +177,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Simulate Sylvester block stacking")
     parser.add_argument("N", type=int, nargs="?", default=10, help="number of blocks to simulate")
     parser.add_argument("--relaxed", action="store_true", help="use relaxed support rule")
+    parser.add_argument("--open", action="store_true", help="use open placement rules")
     args = parser.parse_args()
 
-    stack = Stack(strict=not args.relaxed)
+    stack = Stack(strict=not args.relaxed, open_bounds=args.open)
     stack.build(args.N)
     print(stack.summary())

@@ -69,4 +69,5 @@ extend above height 1. Squares can be colored using either a cycling palette or
 gradient from red to blue. Pass `--renderer gradient` for the gradient style or
 adjust the number of cycling colors with `--colors N`. Pass `--relaxed` when using
 the sylvester algorithm if you wish to enable the relaxed placement rules; otherwise
-strict support is used.
+strict support is used. The `--open` flag avoids blocks lining up exactly with the
+top or right edges of their supports.
