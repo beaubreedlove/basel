@@ -72,10 +72,10 @@ geometry difficult to analyze.
 Finally the **Rational** algorithm reorganizes the placements to produce edges
 whose nontrivial vertices have rational coordinates.  Whenever an $n$‑square is
 placed, the next even‑numbered square $2n$ is positioned adjacent to it in the
-same direction.  Remaining odd squares fill the unused corners in order from bottom right
-to top left.  Infinite paths that repeat the same direction generate series of
-the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
-rational.  This result is still under investigation.
+same direction, while the square $2n+1$ is positioned in the opposite
+direction.  Each round therefore expands every square into two children.  Infinite paths that
+repeat the same direction generate series of the form $\tfrac1n + \tfrac1{2n} + \tfrac1{4n} + \cdots = \tfrac2n$, ensuring every such vertex is
+rational.
 
 ### Examples
 
