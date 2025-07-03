@@ -86,6 +86,11 @@ obtained by multiplying the previous one by the next integer (e.g.,
 $1807 = 42 * 43$). The resulting shape resembles a fractal with endlessly finer
 wiggles.
 
+The fact that 2 is missing from this sequence that otherwise matches Sylvester's
+sequence is that led me to include the rule that newly placed blocks must be
+strictly smaller than the gap they fill. Below are two variations without that
+requirement.
+
 ### Filled Sylvester stack
 
 Notice the 6‑square sits on the 3‑square to completely fill the gap that the
