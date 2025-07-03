@@ -77,6 +77,17 @@ default the Sylvester algorithm leaves a small gap above each square. Use
 `--fill` to pack squares flush against their supports or `--fill-cover-seams` to
 cover seams in the packed version.
 
+### Filled Sylvester stack
+
+Notice the 6‑square sits on the 3‑square to completely fill the gap that the
+default algorithm leaves for the 7‑square and every later square in Sylvester's
+sequence.
+
+![Filled Sylvester stack](../images/sylvester_fill.svg)
+```
+python -m tools.render_stack 2047 --algo sylvester --fill --output sylvester_fill.svg --colors 12
+```
+
 When squares are packed without gaps, the right edge develops a boundary with
 infinitely many oscillations.  The boundary begins at $(S, 1)$ where
 
@@ -93,17 +104,6 @@ The fact that 2 is missing from this sequence that otherwise matches Sylvester's
 sequence is that led me to include the rule that newly placed blocks must be
 strictly smaller than the gap they fill. Below are two variations without that
 requirement.
-
-### Filled Sylvester stack
-
-Notice the 6‑square sits on the 3‑square to completely fill the gap that the
-default algorithm leaves for the 7‑square and every later square in Sylvester's
-sequence.
-
-![Filled Sylvester stack](../images/sylvester_fill.svg)
-```
-python -m tools.render_stack 2047 --algo sylvester --fill --output sylvester_fill.svg --colors 12
-```
 
 ### Covering seams
 
