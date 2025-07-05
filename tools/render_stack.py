@@ -196,6 +196,7 @@ def render_ppm(
     renderer: str = "cycle",
     colors: int = 2,
     numbers: bool = False,
+    debug: bool = False,
 ) -> None:
     """Render the stack to a simple PPM image file."""
     xmax = max(b.x + b.side for b in stack.squares)
@@ -213,6 +214,10 @@ def render_ppm(
             color = _gradient_color(square.n, total_squares)
         else:
             color = _cycle_color(square.n, color_count)
+        if debug:
+            print(
+                f"n={square.n}: ({float(square.x):.3f}, {float(square.y):.3f})"
+            )
         x0 = int(scale * square.x)
         x1 = int(scale * (square.x + square.side))
         y0 = int(scale * (ymax - (square.y + square.side)))
@@ -235,6 +240,7 @@ def render_svg(
     renderer: str = "cycle",
     colors: int = 2,
     numbers: bool = False,
+    debug: bool = False,
 ) -> None:
     """Render the stack to a simple SVG vector image."""
     xmax = max(b.x + b.side for b in stack.squares)
@@ -251,6 +257,10 @@ def render_svg(
                 color = _gradient_color(square.n, total_squares)
             else:
                 color = _cycle_color(square.n, color_count)
+            if debug:
+                print(
+                    f"n={square.n}: ({float(square.x):.3f}, {float(square.y):.3f})"
+                )
             fh.write(
                 f'<rect x="{_fmt(square.x)}" y="{_fmt(ymax - (square.y + square.side))}" '
                 f'width="{_fmt(square.side)}" height="{_fmt(square.side)}" '
@@ -317,6 +327,11 @@ def main() -> None:
         action="store_true",
         help="write a PPM bitmap image instead of an SVG file",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="print square details as they are rendered",
+    )
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
 
@@ -341,6 +356,7 @@ def main() -> None:
             renderer=args.coloring,
             colors=args.colors,
             numbers=not args.no_numbers,
+            debug=args.debug,
         )
     else:
         render_svg(
@@ -349,6 +365,7 @@ def main() -> None:
             renderer=args.coloring,
             colors=args.colors,
             numbers=not args.no_numbers,
+            debug=args.debug,
         )
 
 
